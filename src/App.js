@@ -53,7 +53,7 @@ function App() {
         <MarkerClusterGroup>
           {
             samples.map(sample => <Marker position={[sample.area.coords[1], sample.area.coords[0]]} >
-              <Popup>{sample.name}</Popup>
+              <Popup>{sample.name} - {sample.area_name}</Popup>
             </Marker>)
           }
         </MarkerClusterGroup>
