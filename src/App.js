@@ -71,9 +71,9 @@ function App() {
                     <th>Identifier</th>
                     <th>Collected</th>
                     <th>Location</th>
-                    <th>Size</th>
+                    <th>Size (ml)</th>
                     <th>Extracted</th>
-                    <th>DNA concentration</th>
+                    <th>DNA concentration (ng/μl)</th>
                   </tr>
                 </thead>
                 <tbody>
