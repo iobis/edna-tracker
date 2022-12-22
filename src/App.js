@@ -50,7 +50,7 @@ function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <MarkerClusterGroup>
+        <MarkerClusterGroup maxClusterRadius={40}>
           {
             samples.map(sample => <Marker key={sample.name} position={[sample.area.coords[1], sample.area.coords[0]]} >
               <Popup>{sample.name} - {sample.area_name}</Popup>
