@@ -52,7 +52,7 @@ function App() {
 
         <MarkerClusterGroup>
           {
-            samples.map(sample => <Marker position={[sample.area.coords[1], sample.area.coords[0]]} >
+            samples.map(sample => <Marker key={sample.name} position={[sample.area.coords[1], sample.area.coords[0]]} >
               <Popup>{sample.name} - {sample.area_name}</Popup>
             </Marker>)
           }
@@ -68,14 +68,15 @@ function App() {
               <Table>
                 <thead>
                   <tr>
-                    <th colspan="4">Collection</th>
-                    <th colspan="2">Extraction</th>
+                    <th colSpan="5">Collection</th>
+                    <th colSpan="2">Extraction</th>
                   </tr>
                   <tr>
                     <th>Identifier</th>
                     <th>Collected</th>
                     <th>Location</th>
                     <th>Size (ml)</th>
+                    <th>Blank</th>
                     <th>Extracted</th>
                     <th>DNA concentration (ng/μl)</th>
                   </tr>
@@ -86,6 +87,7 @@ function App() {
                     <td>{sample.timespan_begin}</td>
                     <td>{sample.area_name}</td>
                     <td>{sample.size}</td>
+                    <td>{sample.blank ? "yes" : ""}</td>
                     <td>{sample.extract ? sample.extract.created_at.substring(0, 10) : ""}</td>
                     <td>{sample.extract ? sample.extract.concentration : ""}</td>
                   </tr>) }
