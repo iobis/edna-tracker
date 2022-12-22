@@ -68,6 +68,10 @@ function App() {
               <Table>
                 <thead>
                   <tr>
+                    <th colspan="4">Collection</th>
+                    <th colspan="2">Extraction</th>
+                  </tr>
+                  <tr>
                     <th>Identifier</th>
                     <th>Collected</th>
                     <th>Location</th>
