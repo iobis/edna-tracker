@@ -29,6 +29,24 @@ function App() {
     fetchData();
   }, []);
 
+  function table_sort(column) {
+    if (column === "country") {
+      setSamples([...samples].sort(function(s1, s2) {
+        return s1.area.country < s2.area.country ? -1 : 1;
+      }));
+    }
+    if (column === "collected") {
+      setSamples([...samples].sort(function(s1, s2) {
+        return s1.timespan_begin < s2.timespan_begin ? -1 : 1;
+      }));
+    }
+    if (column === "identifier") {
+      setSamples([...samples].sort(function(s1, s2) {
+        return s1.name < s2.name ? -1 : 1;
+      }));
+    }
+  }
+
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -72,9 +90,9 @@ function App() {
                     <th colSpan="2">Extraction</th>
                   </tr>
                   <tr>
-                    <th>Identifier</th>
-                    <th>Country</th>
-                    <th>Collected</th>
+                    <th onClick={() => table_sort("identifier")}><span role="button">Identifier ↓</span></th>
+                    <th onClick={() => table_sort("country")}><span role="button">Country ↓</span></th>
+                    <th onClick={() => table_sort("collected")}><span role="button">Collected ↓</span></th>
                     <th>Location</th>
                     <th>Size (ml)</th>
                     <th>Blank</th>
