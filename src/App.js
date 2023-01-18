@@ -65,14 +65,15 @@ function App() {
           <Col lg={true} className="mb-3">
             {
               samples.length ?
-              <Table>
+              <Table className="table-sm text-sm">
                 <thead>
                   <tr>
-                    <th colSpan="5">Collection</th>
+                    <th colSpan="6">Collection</th>
                     <th colSpan="2">Extraction</th>
                   </tr>
                   <tr>
                     <th>Identifier</th>
+                    <th>Country</th>
                     <th>Collected</th>
                     <th>Location</th>
                     <th>Size (ml)</th>
@@ -84,6 +85,7 @@ function App() {
                 <tbody>
                   { samples.map((sample) => <tr key={sample.name}>
                     <td>{sample.name}</td>
+                    <td>{sample.area.country}</td>
                     <td>{sample.timespan_begin}</td>
                     <td>{sample.area_name}</td>
                     <td>{sample.size}</td>

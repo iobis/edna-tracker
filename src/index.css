@@ -21,3 +21,7 @@ code {
 .markercluster-map {
   height: 90vh;
 }
+
+.text-sm {
+  font-size: 0.9em;
+}
