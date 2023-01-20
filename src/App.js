@@ -109,7 +109,10 @@ function App() {
                     <td>{sample.size}</td>
                     <td>{sample.blank ? "yes" : ""}</td>
                     <td>{sample.extract ? sample.extract.created_at.substring(0, 10) : ""}</td>
-                    <td>{sample.extract ? sample.extract.concentration : ""}</td>
+                    <td>
+                      {sample.extract ? <span style={{"display": "inline-block", "width": "50px"}}>{sample.extract.concentration}</span> : ""}
+                      {sample.extract && <span className="bar" style={{width: sample.extract.concentration}}></span>}
+                    </td>
                   </tr>) }
                 </tbody>
               </Table> :
