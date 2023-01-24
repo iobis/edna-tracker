@@ -36,6 +36,8 @@ function App() {
       setSamples([...samples].sort(function(s1, s2) {
         if (s1.area && s2.area) {
           return s1.area.country < s2.area.country ? -1 : 1;
+        } else {
+          return 1;
         }
       }));
     }
