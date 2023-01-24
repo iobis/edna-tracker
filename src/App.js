@@ -34,7 +34,9 @@ function App() {
   function table_sort(column) {
     if (column === "country") {
       setSamples([...samples].sort(function(s1, s2) {
-        return s1.area.country < s2.area.country ? -1 : 1;
+        if (s1.area && s2.area) {
+          return s1.area.country < s2.area.country ? -1 : 1;
+        }
       }));
     }
     if (column === "collected") {
@@ -84,7 +86,7 @@ function App() {
 
         <MarkerClusterGroup maxClusterRadius={40}>
           {
-            samples.map(sample => <Marker key={sample.name} position={[sample.area.coords[1], sample.area.coords[0]]} >
+            samples.filter(sample => sample.area).map(sample => <Marker key={sample.name} position={[sample.area.coords[1], sample.area.coords[0]]} >
               <Popup>{sample.name} - {sample.area_name}</Popup>
             </Marker>)
           }
@@ -117,7 +119,7 @@ function App() {
                 <tbody>
                   { samples.map((sample) => <tr key={sample.name}>
                     <td>{sample.name}</td>
-                    <td>{sample.area.country}</td>
+                    <td>{sample.area ? sample.area.country : ""}</td>
                     <td>{sample.timespan_begin}</td>
                     <td>{sample.area_name}</td>
                     <td>{sample.size}</td>
