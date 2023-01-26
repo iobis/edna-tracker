@@ -68,6 +68,7 @@ function App() {
         center={[10, 0]}
         zoom={1}
         scrollWheelZoom={true}
+        attributionControl={false}
       >
         <LayersControl position="topright">
           <LayersControl.Overlay name="Marker with popup">
