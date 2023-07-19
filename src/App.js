@@ -32,6 +32,7 @@ function countValues(arr, prop) {
 function App() {
 
   const [query, setQuery] = useState("");
+  const [created, setCreated] = useState("");
   const [site, setSite] = useState("");
   const [sites, setSites] = useState([]);
   const [samples, setSamples] = useState([]);
@@ -123,12 +124,12 @@ function App() {
     async function fetchData() {
       let input = getUrlParam();
       setQuery(input);
-
       const res = await fetch("https://raw.githubusercontent.com/iobis/edna-tracker-data/data/generated.json");
       const data = await res.json();
       data.samples.forEach(sample => {
         sample.display = true;
       });
+      setCreated(data.created);
       setSites(data.sites);
       filterSamples(data.samples, site, input);
       calculateStatusChart(data.samples);
@@ -267,6 +268,19 @@ function App() {
           </Col>
         </Row>
       </Container>
+      <footer className="footer mt-auto pt-5 pb-5 bg-light">
+        <Container>
+        <Row>
+          <Col lg={true}>
+            <img src="logo.jpg" alt="logo" className="img-fluid logo" />
+          </Col>
+          <Col lg={true}>
+            <p className="text-muted">Environmental DNA Expeditions is a global, citizen science initiative that will help measure marine biodiversity, and the impacts climate change might have on the distribution patterns of marine life, across UNESCO World Heritage marine sites.</p>
+            <p className="text-muted">Data last updated {created}.</p>
+          </Col>
+        </Row>
+        </Container>
+      </footer>
     </div>
   );
 }

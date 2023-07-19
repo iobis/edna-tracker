@@ -49,3 +49,14 @@ code {
 .bg-extracted {
   background-color: #468B97;
 }
+
+.footer {
+  background-color: #000000;
+  color: #ffffff;
+  width: 100%;
+}
+
+.logo {
+  width: 250px;
+  opacity: 1;
+}
