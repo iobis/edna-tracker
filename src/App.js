@@ -31,6 +31,7 @@ function countValues(arr, prop) {
 
 function App() {
 
+  const [query, setQuery] = useState("");
   const [site, setSite] = useState("");
   const [sites, setSites] = useState([]);
   const [samples, setSamples] = useState([]);
@@ -71,16 +72,32 @@ function App() {
     });
   }
 
+  function showSample(sample, site, input) {
+    const site_ok = sample.parent_area_plutof_id.toString() === site || site == "";
+    const query = sample.name.toLowerCase().includes(input) || sample.area_name.toLowerCase().includes(input) || sample.parent_area_name.toLowerCase().includes(input) || input == "";
+    return site_ok && query;
+  }
+
   function handleSiteChange(event) {
     const parent_area_plutof_id = event.target.value;
     setSite(parent_area_plutof_id);
+    filterSamples(samples, parent_area_plutof_id, query);
+  }
+
+  function handleQueryChange(event) {
+    const input = event.target.value.toLowerCase();
+    setQuery(input);
+    filterSamples(samples, site, input);
+  }
+
+  function filterSamples(samples, site, input) {
     const new_samples = [...samples].map(sample => {
-      sample.display = sample.parent_area_plutof_id == parent_area_plutof_id || parent_area_plutof_id == "";
+      sample.display = showSample(sample, site, input);
       return sample;
     });
     setSamples(new_samples);
     calculateStatusChart(new_samples);
-  }
+  };
 
   function status_class(status) {
     if (status === "registered") {
@@ -92,15 +109,28 @@ function App() {
     }
   }
 
+  function getUrlParam() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    if (Object.keys(params).length > 0) {
+      return Object.keys(params)[0];
+    } else {
+      return "";
+    }
+  }
+
   useEffect(() => {
     async function fetchData() {
+      let input = getUrlParam();
+      setQuery(input);
+
       const res = await fetch("https://raw.githubusercontent.com/iobis/edna-tracker-data/data/generated.json");
       const data = await res.json();
       data.samples.forEach(sample => {
         sample.display = true;
       });
       setSites(data.sites);
-      setSamples(data.samples);
+      filterSamples(data.samples, site, input);
       calculateStatusChart(data.samples);
     }
     fetchData();
@@ -180,14 +210,21 @@ function App() {
       </MapContainer>
 
       <Container className="mt-3 mb-3">
-      <Row>
+        <Row>
           <Col lg={true} className="mt-3 mb-3">
-            <select className="form-select" value={site} onChange={handleSiteChange}>
-              <option value="">Select site</option>
-              {
-                sites.map((site) => <option key={site.plutof_id} value={site.plutof_id}>{site.name}</option>)
-              }
-            </select>
+          <div>
+              <label className="mb-2">Select World Heritage site</label>
+              <select className="form-select" value={site} onChange={handleSiteChange}>
+                <option value="">Select site</option>
+                {
+                  sites.map((site) => <option key={site.plutof_id} value={site.plutof_id}>{site.name}</option>)
+                }
+              </select>
+            </div>
+            <div className="mt-3">
+              <label className="mb-2">Search</label>
+              <input value={query} onChange={handleQueryChange} className="form-control" type="text" placeholder="Search" />
+            </div>
           </Col>
           <Col lg={true} className="mt-3 mb-3 text-center">
             <HighchartsReact highcharts={Highcharts} options={statusChart} />
