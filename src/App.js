@@ -49,7 +49,6 @@ function App() {
 
   function calculateStatusChart(new_samples) {
     const counts = countValues(new_samples.filter(sample => sample.display), "status");
-    console.log(counts);
     setStatusChart({
       ...statusChart,
       series: [

@@ -21,6 +21,8 @@ jobs:
       run: npm install
     - name: Build page
       run: npm run build
+      env:
+        CI: ""
     - name: Create cname file
       uses: finnp/create-file-action@master
       env:
