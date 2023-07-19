@@ -20,35 +20,61 @@ L.Icon.Default.mergeOptions({
 
 function App() {
 
+  const [site, setSite] = useState("");
+  const [sites, setSites] = useState([]);
   const [samples, setSamples] = useState([]);
+
+  function handleSiteChange(event) {
+    const parent_area_plutof_id = event.target.value;
+    setSite(parent_area_plutof_id);
+    setSamples([...samples].map(sample => {
+      sample.display = sample.parent_area_plutof_id == parent_area_plutof_id || parent_area_plutof_id == "";
+      return sample;
+    }));
+  }
+
+  function status_class(status) {
+    if (status === "registered") {
+      return "bg-registered";
+    } else if (status === "collected") {
+      return "bg-collected";
+    } else if (status === "extracted") {
+      return "bg-extracted";
+    }
+  }
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("https://1di1zf6xed.execute-api.us-east-1.amazonaws.com/v0/samples");
+      const res = await fetch("https://raw.githubusercontent.com/iobis/edna-tracker-data/data/generated.json");
       const data = await res.json();
-      setSamples(data);
+      data.samples.forEach(sample => {
+        sample.display = true;
+      });
+      setSites(data.sites);
+      setSamples(data.samples);
     }
     fetchData();
   }, []);
 
   function table_sort(column) {
-    if (column === "country") {
+    if (column === "event_begin") {
       setSamples([...samples].sort(function(s1, s2) {
-        if (s1.area && s2.area) {
-          return s1.area.country < s2.area.country ? -1 : 1;
-        } else {
-          return 1;
-        }
+        return s1.event_begin < s2.event_begin ? -1 : 1;
       }));
     }
-    if (column === "collected") {
-      setSamples([...samples].sort(function(s1, s2) {
-        return s1.timespan_begin < s2.timespan_begin ? -1 : 1;
-      }));
-    }
-    if (column === "identifier") {
+    if (column === "name") {
       setSamples([...samples].sort(function(s1, s2) {
         return s1.name < s2.name ? -1 : 1;
+      }));
+    }
+    if (column === "parent_area_name") {
+      setSamples([...samples].sort(function(s1, s2) {
+        return s1.parent_area_name < s2.parent_area_name ? -1 : 1;
+      }));
+    }
+    if (column === "area_name") {
+      setSamples([...samples].sort(function(s1, s2) {
+        return s1.area_name < s2.area_name ? -1 : 1;
       }));
     }
   }
@@ -58,7 +84,7 @@ function App() {
       <Navbar bg="light" expand="lg">
         <Container>
           <Navbar.Brand href="/">
-            eDNA expeditions sample tracking
+            eDNA Expeditions sample tracking
           </Navbar.Brand>
         </Container>
       </Navbar>
@@ -72,13 +98,19 @@ function App() {
       >
         <LayersControl position="topright">
           <LayersControl.Overlay name="Marker with popup">
-          <BaseLayer name="OpenStreetMap">
+            <BaseLayer checked name="CartoDB">
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+              />
+            </BaseLayer>
+            <BaseLayer name="OpenStreetMap">
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
             </BaseLayer>
-            <BaseLayer checked name="ESRI World Imagery">
+            <BaseLayer name="ESRI World Imagery">
               <TileLayer
                 attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
                 url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
@@ -89,7 +121,7 @@ function App() {
 
         <MarkerClusterGroup maxClusterRadius={40}>
           {
-            samples.filter(sample => sample.area).map(sample => <Marker key={sample.name} position={[sample.area.coords[1], sample.area.coords[0]]} >
+            samples.filter(sample => sample.area_longitude && sample.display).map(sample => <Marker key={sample.name} position={[sample.area_latitude, sample.area_longitude]} >
               <Popup>{sample.name} - {sample.area_name}</Popup>
             </Marker>)
           }
@@ -98,39 +130,46 @@ function App() {
       </MapContainer>
 
       <Container className="mt-3 mb-3">
+      <Row>
+          <Col lg={true} className="mt-3 mb-3">
+            <select className="form-select" value={site} onChange={handleSiteChange}>
+              <option value="">Select site</option>
+              {
+                sites.map((site) => <option key={site.plutof_id} value={site.plutof_id}>{site.name}</option>)
+              }
+            </select>
+          </Col>
+          <Col lg={true} className="mt-3 mb-3 text-center">
+          </Col>
+        </Row>
         <Row>
           <Col lg={true} className="mb-3">
             {
               samples.length ?
               <Table className="table-sm text-sm">
                 <thead>
-                  <tr>
-                    <th colSpan="6">Collection</th>
-                    <th colSpan="2">Extraction</th>
-                  </tr>
-                  <tr>
-                    <th onClick={() => table_sort("identifier")}><span role="button">Identifier ↓</span></th>
-                    <th onClick={() => table_sort("country")}><span role="button">Country ↓</span></th>
-                    <th onClick={() => table_sort("collected")}><span role="button">Collected ↓</span></th>
-                    <th>Location</th>
+                  <tr className="nowrap">
+                    <th onClick={() => table_sort("name")}><span role="button">Identifier ↓</span></th>
+                    <th>Status</th>
+                    <th onClick={() => table_sort("parent_area_name")}><span role="button">Site ↓</span></th>
+                    <th onClick={() => table_sort("area_name")}><span role="button">Locality ↓</span></th>
+                    <th onClick={() => table_sort("event_begin")}><span role="button">Collected ↓</span></th>
                     <th>Size (ml)</th>
                     <th>Blank</th>
-                    <th>Extracted</th>
-                    <th>DNA concentration (ng/μl)</th>
+                    <th>DNA<br/>(ng/μl)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  { samples.map((sample) => <tr key={sample.name}>
+                  { samples.filter(sample => sample.display).map((sample) => <tr key={sample.name}>
                     <td>{sample.name}</td>
-                    <td>{sample.area ? sample.area.country : ""}</td>
-                    <td>{sample.timespan_begin}</td>
+                    <td><span className={status_class(sample.status) + " badge"}>{sample.status}</span></td>
+                    <td>{sample.parent_area_name}</td>
                     <td>{sample.area_name}</td>
+                    <td className="nowrap">{sample.event_begin}</td>
                     <td>{sample.size}</td>
                     <td>{sample.blank ? "yes" : ""}</td>
-                    <td>{sample.extract ? sample.extract.created_at.substring(0, 10) : ""}</td>
                     <td>
-                      {sample.extract ? <span style={{"display": "inline-block", "width": "50px"}}>{sample.extract.concentration}</span> : ""}
-                      {sample.extract && <span className="bar" style={{width: sample.extract.concentration}}></span>}
+                    { sample.dnas.map((dna) => <span key={dna.plutof_id}>{dna.concentration}</span> )}
                     </td>
                   </tr>) }
                 </tbody>
