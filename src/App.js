@@ -9,7 +9,10 @@ import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import L from "leaflet";
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
+Highcharts.setOptions({ credits: { enabled: false } });
 const { BaseLayer } = LayersControl;
 
 L.Icon.Default.mergeOptions({
@@ -18,19 +21,66 @@ L.Icon.Default.mergeOptions({
   shadowUrl: iconShadow,
 });
 
+function countValues(arr, prop) {
+  return arr.reduce((acc, obj) => {
+    const val = obj[prop];
+    acc[val] = (acc[val] || 0) + 1;
+    return acc;
+  }, {});
+}
+
 function App() {
 
   const [site, setSite] = useState("");
   const [sites, setSites] = useState([]);
   const [samples, setSamples] = useState([]);
+  const [statusChart, setStatusChart] = useState(
+    {
+      chart: { type: "bar", height: "200px" },
+      xAxis: { labels: { formatter: function() { return "Status" }}, categories: ["registered",  "collected", "extracted"] },
+      yAxis: { title: null },
+      legend: { reversed: false },
+      plotOptions: { series: { stacking: "normal" }},
+      colors: [ "#468B97", "#F3AA60", "#EF6262" ],
+      title: null,
+      series: []
+    }
+  );
+
+  function calculateStatusChart(new_samples) {
+    const counts = countValues(new_samples.filter(sample => sample.display), "status");
+    console.log(counts);
+    setStatusChart({
+      ...statusChart,
+      series: [
+        {
+          name: "extracted",
+          data: [counts.extracted ? counts.extracted : 0],
+          legendIndex: 3
+        },
+        {
+          name: "collected",
+          data: [counts.collected ? counts.collected : 0],
+          legendIndex: 2
+        },
+        {
+          name: "registered",
+          data: [counts.registered ? counts.registered : 0],
+          legendIndex: 1
+        },
+      ]
+    });
+  }
 
   function handleSiteChange(event) {
     const parent_area_plutof_id = event.target.value;
     setSite(parent_area_plutof_id);
-    setSamples([...samples].map(sample => {
+    const new_samples = [...samples].map(sample => {
       sample.display = sample.parent_area_plutof_id == parent_area_plutof_id || parent_area_plutof_id == "";
       return sample;
-    }));
+    });
+    setSamples(new_samples);
+    calculateStatusChart(new_samples);
   }
 
   function status_class(status) {
@@ -52,6 +102,7 @@ function App() {
       });
       setSites(data.sites);
       setSamples(data.samples);
+      calculateStatusChart(data.samples);
     }
     fetchData();
   }, []);
@@ -140,6 +191,7 @@ function App() {
             </select>
           </Col>
           <Col lg={true} className="mt-3 mb-3 text-center">
+            <HighchartsReact highcharts={Highcharts} options={statusChart} />
           </Col>
         </Row>
         <Row>
