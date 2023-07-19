@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Navbar, Container, Row, Col, Table } from "react-bootstrap";
-import { MapContainer, TileLayer, Marker, Popup, LayersControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, LayersControl, GeoJSON } from "react-leaflet";
 import MarkerClusterGroup from "@changey/react-leaflet-markercluster";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "leaflet/dist/leaflet.css";
@@ -34,6 +34,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [created, setCreated] = useState("");
   const [site, setSite] = useState("");
+  const [geo, setGeo] = useState(null);
   const [sites, setSites] = useState([]);
   const [samples, setSamples] = useState([]);
   const [statusChart, setStatusChart] = useState(
@@ -48,6 +49,7 @@ function App() {
       series: []
     }
   );
+  const geoRef = useRef(null);
 
   function calculateStatusChart(new_samples) {
     const counts = countValues(new_samples.filter(sample => sample.display), "status");
@@ -121,6 +123,12 @@ function App() {
   }
 
   useEffect(() => {
+    if (geoRef.current) {
+      geoRef.current.clearLayers().addData(geo);
+    }
+  }, [geo]);
+
+  useEffect(() => {
     async function fetchData() {
       let input = getUrlParam();
       setQuery(input);
@@ -135,9 +143,15 @@ function App() {
       calculateStatusChart(data.samples);
     }
     fetchData();
+    async function fetchGeo() {
+      const res = await fetch("sites.geojson");
+      const data = await res.json();
+      setGeo(data);
+    }
+    fetchGeo();
   }, []);
 
-  function table_sort(column) {
+  function sortSamples(column) {
     if (column === "event_begin") {
       setSamples([...samples].sort(function(s1, s2) {
         return s1.event_begin < s2.event_begin ? -1 : 1;
@@ -157,6 +171,12 @@ function App() {
       setSamples([...samples].sort(function(s1, s2) {
         return s1.area_name < s2.area_name ? -1 : 1;
       }));
+    }
+  }
+
+  function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.name) {
+        layer.bindPopup(feature.properties.name);
     }
   }
 
@@ -200,6 +220,12 @@ function App() {
           </LayersControl.Overlay>
         </LayersControl>
 
+        <GeoJSON data={geo} ref={geoRef} onEachFeature={onEachFeature} style={{
+          "color": "#ff7800",
+          "weight": 2,
+          "opacity": 0.5,
+        }}/>
+
         <MarkerClusterGroup maxClusterRadius={40}>
           {
             samples.filter(sample => sample.area_longitude && sample.display).map(sample => <Marker key={sample.name} position={[sample.area_latitude, sample.area_longitude]} >
@@ -213,7 +239,7 @@ function App() {
       <Container className="mt-3 mb-3">
         <Row>
           <Col lg={true} className="mt-3 mb-3">
-          <div>
+            <div>
               <label className="mb-2">Select World Heritage site</label>
               <select className="form-select" value={site} onChange={handleSiteChange}>
                 <option value="">Select site</option>
@@ -238,11 +264,11 @@ function App() {
               <Table className="table-sm text-sm">
                 <thead>
                   <tr className="nowrap">
-                    <th onClick={() => table_sort("name")}><span role="button">Identifier ↓</span></th>
+                    <th onClick={() => sortSamples("name")}><span role="button">Identifier ↓</span></th>
                     <th>Status</th>
-                    <th onClick={() => table_sort("parent_area_name")}><span role="button">Site ↓</span></th>
-                    <th onClick={() => table_sort("area_name")}><span role="button">Locality ↓</span></th>
-                    <th onClick={() => table_sort("event_begin")}><span role="button">Collected ↓</span></th>
+                    <th onClick={() => sortSamples("parent_area_name")}><span role="button">Site ↓</span></th>
+                    <th onClick={() => sortSamples("area_name")}><span role="button">Locality ↓</span></th>
+                    <th onClick={() => sortSamples("event_begin")}><span role="button">Collected ↓</span></th>
                     <th>Size (ml)</th>
                     <th>Blank</th>
                     <th>DNA<br/>(ng/μl)</th>
