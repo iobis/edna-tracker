@@ -81,16 +81,22 @@ function App() {
     return site_ok && query;
   }
 
+  function updateUrl(site, input) {
+    window.history.replaceState(null, null, "?search=" + input +"&site=" + site);
+  }
+
   function handleSiteChange(event) {
     const parent_area_plutof_id = event.target.value;
     setSite(parent_area_plutof_id);
     filterSamples(samples, parent_area_plutof_id, query);
+    updateUrl(parent_area_plutof_id, query);
   }
 
   function handleQueryChange(event) {
     const input = event.target.value.toLowerCase();
     setQuery(input);
     filterSamples(samples, site, input);
+    updateUrl(site, input);
   }
 
   function filterSamples(samples, site, input) {
@@ -102,7 +108,7 @@ function App() {
     calculateStatusChart(new_samples);
   };
 
-  function status_class(status) {
+  function statusClass(status) {
     if (status === "registered") {
       return "bg-registered";
     } else if (status === "collected") {
@@ -112,13 +118,11 @@ function App() {
     }
   }
 
-  function getUrlParam() {
+  function getUrlParams() {
     const urlSearchParams = new URLSearchParams(window.location.search);
-    const params = Object.fromEntries(urlSearchParams.entries());
-    if (Object.keys(params).length > 0) {
-      return Object.keys(params)[0];
-    } else {
-      return "";
+    return {
+      search: urlSearchParams.get("search") ? urlSearchParams.get("search") : "",
+      site: urlSearchParams.get("site") ? urlSearchParams.get("site") : ""
     }
   }
 
@@ -130,16 +134,21 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      let input = getUrlParam();
-      setQuery(input);
+      const params = getUrlParams();
+      const input = params.search;
+      const siteid = params.site;
+
       const res = await fetch("https://raw.githubusercontent.com/iobis/edna-tracker-data/data/generated.json");
       const data = await res.json();
       data.samples.forEach(sample => {
         sample.display = true;
       });
+
+      setQuery(input);
+      setSite(siteid);
       setCreated(data.created);
       setSites(data.sites);
-      filterSamples(data.samples, site, input);
+      filterSamples(data.samples, siteid, input);
       calculateStatusChart(data.samples);
     }
     fetchData();
@@ -277,7 +286,7 @@ function App() {
                 <tbody>
                   { samples.filter(sample => sample.display).map((sample) => <tr key={sample.name}>
                     <td>{sample.name}</td>
-                    <td><span className={status_class(sample.status) + " badge"}>{sample.status}</span></td>
+                    <td><span className={statusClass(sample.status) + " badge"}>{sample.status}</span></td>
                     <td>{sample.parent_area_name}</td>
                     <td>{sample.area_name}</td>
                     <td className="nowrap">{sample.event_begin}</td>
