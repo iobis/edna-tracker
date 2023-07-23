@@ -40,11 +40,11 @@ function App() {
   const [statusChart, setStatusChart] = useState(
     {
       chart: { type: "bar", height: "200px" },
-      xAxis: { labels: { formatter: function() { return "Status" }}, categories: ["registered",  "collected", "extracted"] },
+      xAxis: { labels: { formatter: function() { return "Status" }}, categories: ["registered",  "collected", "extracted", "sequenced"] },
       yAxis: { title: null },
       legend: { reversed: false },
       plotOptions: { series: { stacking: "normal" }},
-      colors: [ "#468B97", "#F3AA60", "#EF6262" ],
+      colors: [ "#85A389", "#468B97", "#F3AA60", "#EF6262" ],
       title: null,
       series: []
     }
@@ -56,6 +56,11 @@ function App() {
     setStatusChart({
       ...statusChart,
       series: [
+        {
+          name: "sequenced",
+          data: [counts.sequenced ? counts.sequenced : 0],
+          legendIndex: 4
+        },
         {
           name: "extracted",
           data: [counts.extracted ? counts.extracted : 0],
@@ -115,6 +120,8 @@ function App() {
       return "bg-collected";
     } else if (status === "extracted") {
       return "bg-extracted";
+    } else if (status === "sequenced") {
+      return "bg-sequenced";
     }
   }
 
