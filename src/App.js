@@ -195,7 +195,7 @@ function App() {
       setQuery(input);
       setSite(siteid);
       setCreated(data.created);
-      setSites(data.sites);
+      setSites(data.sites.sort((a, b) => (a.name > b.name) ? 1 : -1));
       filterSamples(data.samples, siteid, input);
       calculateStatusChart(data.samples);
       calculateConcentrationChart(data.samples);
