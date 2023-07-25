@@ -53,8 +53,8 @@ function App() {
     {
       chart: { type: "scatter", height: "200px" },
       title: null,
-      yAxis: { title: { text: "Concentration (ng/μl)" } },
-      xAxis: { labels: { enabled: false }, tickLength: 0 },
+      yAxis: { title: { text: "DNA concentration (ng/μl)" } },
+      xAxis: { categories: ["Sample", "Blank"] },
       plotOptions: {
         scatter: {
           showInLegend: false,
@@ -79,13 +79,19 @@ function App() {
 
   function calculateConcentrationChart(new_samples) {
     const concentrations = new_samples.filter(sample => sample.display).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
+    const concentrations_blank = new_samples.filter(sample => sample.display && sample.blank).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
     const data = concentrations.map(conc => Array(0, conc));
+    const data_blank = concentrations_blank.map(conc => Array(1, conc));
     setConcentrationChart({
       ...concentrationChart,
       series: [
         {
           name: "DNA concentration",
           data: data
+        },
+        {
+          name: "DNA concentration blank",
+          data: data_blank
         }
       ]
     });
