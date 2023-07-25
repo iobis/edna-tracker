@@ -51,7 +51,7 @@ function App() {
   );
   const [concentrationChart, setConcentrationChart] = useState(
     {
-      chart: { type: "scatter", height: "240px" },
+      chart: { type: "scatter", height: "200px" },
       title: null,
       yAxis: { title: { text: "Concentration (ng/μl)" } },
       xAxis: { labels: { enabled: false }, tickLength: 0 },
