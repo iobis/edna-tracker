@@ -9,8 +9,8 @@ import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import L from "leaflet";
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 
 Highcharts.setOptions({ credits: { enabled: false } });
 const { BaseLayer } = LayersControl;
@@ -49,7 +49,47 @@ function App() {
       series: []
     }
   );
+  const [concentrationChart, setConcentrationChart] = useState(
+    {
+      chart: { type: "scatter", height: "240px" },
+      title: null,
+      yAxis: { title: { text: "Concentration (ng/μl)" } },
+      xAxis: { labels: { enabled: false }, tickLength: 0 },
+      plotOptions: {
+        scatter: {
+          showInLegend: false,
+          jitter: {
+              x: 0.1,
+              y: 0
+          },
+          marker: {
+              radius: 2,
+              symbol: "circle",
+              fillColor: "#EF6262"
+          },
+          tooltip: {
+              pointFormat: "Concentration (ng/μl): {point.y:.3f}"
+          }
+        }
+      },
+      series: []
+    }
+  );
   const geoRef = useRef(null);
+
+  function calculateConcentrationChart(new_samples) {
+    const concentrations = new_samples.filter(sample => sample.display).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
+    const data = concentrations.map(conc => Array(0, conc));
+    setConcentrationChart({
+      ...concentrationChart,
+      series: [
+        {
+          name: "DNA concentration",
+          data: data
+        }
+      ]
+    });
+  }
 
   function calculateStatusChart(new_samples) {
     const counts = countValues(new_samples.filter(sample => sample.display), "status");
@@ -111,6 +151,7 @@ function App() {
     });
     setSamples(new_samples);
     calculateStatusChart(new_samples);
+    calculateConcentrationChart(new_samples);
   };
 
   function statusClass(status) {
@@ -157,6 +198,7 @@ function App() {
       setSites(data.sites);
       filterSamples(data.samples, siteid, input);
       calculateStatusChart(data.samples);
+      calculateConcentrationChart(data.samples);
     }
     fetchData();
     async function fetchGeo() {
@@ -254,7 +296,7 @@ function App() {
 
       <Container className="mt-3 mb-3">
         <Row>
-          <Col lg={true} className="mt-3 mb-3">
+          <Col lg="4" className="mt-3 mb-3">
             <div>
               <label className="mb-2">Select World Heritage site</label>
               <select className="form-select" value={site} onChange={handleSiteChange}>
@@ -269,12 +311,15 @@ function App() {
               <input value={query} onChange={handleQueryChange} className="form-control" type="text" placeholder="Search" />
             </div>
           </Col>
-          <Col lg={true} className="mt-3 mb-3 text-center">
+          <Col lg="3" className="mt-3 mb-3 text-center">
+            <HighchartsReact highcharts={Highcharts} options={concentrationChart} />
+          </Col>
+          <Col lg="5" className="mt-3 mb-3 text-center">
             <HighchartsReact highcharts={Highcharts} options={statusChart} />
           </Col>
         </Row>
         <Row>
-          <Col lg={true} className="mb-3">
+          <Col className="mb-3">
             {
               samples.length ?
               <Table className="table-sm text-sm">
