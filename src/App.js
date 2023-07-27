@@ -11,6 +11,7 @@ import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import L from "leaflet";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { Link45deg, X, FileText } from "react-bootstrap-icons";
 
 Highcharts.setOptions({ credits: { enabled: false } });
 const { BaseLayer } = LayersControl;
@@ -33,10 +34,12 @@ function App() {
 
   const [query, setQuery] = useState("");
   const [created, setCreated] = useState("");
-  const [site, setSite] = useState("");
+  const [siteId, setSiteId] = useState("");
+  const [site, setSite] = useState(null);
   const [geo, setGeo] = useState(null);
   const [sites, setSites] = useState([]);
   const [samples, setSamples] = useState([]);
+  const [species, setSpecies] = useState(null);
   const [statusChart, setStatusChart] = useState(
     {
       chart: { type: "bar", height: "200px" },
@@ -80,8 +83,8 @@ function App() {
   function calculateConcentrationChart(new_samples) {
     const concentrations = new_samples.filter(sample => sample.display).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
     const concentrations_blank = new_samples.filter(sample => sample.display && sample.blank).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
-    const data = concentrations.map(conc => Array(0, conc));
-    const data_blank = concentrations_blank.map(conc => Array(1, conc));
+    const data = concentrations.map(conc => [0, conc]);
+    const data_blank = concentrations_blank.map(conc => [1, conc]);
     setConcentrationChart({
       ...concentrationChart,
       series: [
@@ -126,39 +129,50 @@ function App() {
     });
   }
 
-  function showSample(sample, site, input) {
-    const site_ok = sample.parent_area_plutof_id.toString() === site || site == "";
-    const query = sample.name.toLowerCase().includes(input) || sample.area_name.toLowerCase().includes(input) || sample.parent_area_name.toLowerCase().includes(input) || input == "";
+  function showSample(sample, siteId, input) {
+    const site_ok = sample.parent_area_plutof_id.toString() === siteId || siteId === "";
+    const query = sample.name.toLowerCase().includes(input) || sample.area_name.toLowerCase().includes(input) || sample.parent_area_name.toLowerCase().includes(input) || input === "";
     return site_ok && query;
   }
 
-  function updateUrl(site, input) {
-    window.history.replaceState(null, null, "?search=" + input +"&site=" + site);
+  function updateUrl(siteId, input) {
+    window.history.replaceState(null, null, "?search=" + input +"&site=" + siteId);
   }
 
   function handleSiteChange(event) {
     const parent_area_plutof_id = event.target.value;
-    setSite(parent_area_plutof_id);
+    setSiteId(parent_area_plutof_id);
+    setSite(sites[parent_area_plutof_id]);
     filterSamples(samples, parent_area_plutof_id, query);
     updateUrl(parent_area_plutof_id, query);
+    setSpecies(null);
   }
 
   function handleQueryChange(event) {
     const input = event.target.value.toLowerCase();
     setQuery(input);
-    filterSamples(samples, site, input);
-    updateUrl(site, input);
+    filterSamples(samples, siteId, input);
+    updateUrl(siteId, input);
   }
 
-  function filterSamples(samples, site, input) {
+  function filterSamples(samples, siteId, input) {
     const new_samples = [...samples].map(sample => {
-      sample.display = showSample(sample, site, input);
+      sample.display = showSample(sample, siteId, input);
       return sample;
     });
     setSamples(new_samples);
     calculateStatusChart(new_samples);
     calculateConcentrationChart(new_samples);
   };
+
+  function showSpecies() {
+    async function fetchSpecies() {
+      const res = await fetch("https://raw.githubusercontent.com/iobis/mwhs-obis-species/master/lists/" + site.simplified_name + ".json");
+      const data = await res.json();
+      setSpecies(data);
+    }
+    fetchSpecies();
+  }
 
   function statusClass(status) {
     if (status === "registered") {
@@ -199,9 +213,16 @@ function App() {
       });
 
       setQuery(input);
-      setSite(siteid);
+      setSiteId(siteid);
       setCreated(data.created);
-      setSites(data.sites.sort((a, b) => (a.name > b.name) ? 1 : -1));
+      data.sites = data.sites.reduce((obj, item) => {
+        obj[item.plutof_id] = item;
+        return obj;
+      }, {});
+      setSites(data.sites);
+      if (siteid) {
+        setSite(data.sites[siteid]);
+      }
       filterSamples(data.samples, siteid, input);
       calculateStatusChart(data.samples);
       calculateConcentrationChart(data.samples);
@@ -305,10 +326,10 @@ function App() {
           <Col lg="4" className="mt-3 mb-3">
             <div>
               <label className="mb-2">Select World Heritage site</label>
-              <select className="form-select" value={site} onChange={handleSiteChange}>
+              <select className="form-select" value={siteId} onChange={handleSiteChange}>
                 <option value="">Select site</option>
                 {
-                  sites.map((site) => <option key={site.plutof_id} value={site.plutof_id}>{site.name}</option>)
+                  Object.values(sites).sort((a, b) => (a.name > b.name) ? 1 : -1).map((site) => <option key={site.plutof_id} value={site.plutof_id}>{site.name}</option>)
                 }
               </select>
             </div>
@@ -324,42 +345,89 @@ function App() {
             <HighchartsReact highcharts={Highcharts} options={statusChart} />
           </Col>
         </Row>
+        { site &&
+          <Row>
+            <Col className="mb-2">
+              <h2>{site.name}</h2>
+              <p>
+                <Link45deg /> <a href={site.url} target="_blank">{ site.url }</a>
+                <FileText className="ms-3" /> <span className="a" onClick={showSpecies}>OBIS species list</span>
+              </p>
+            </Col>
+            <Col className="mb-2">
+            </Col>
+          </Row>
+        }
+        { !species &&
+          <Row>
+            <Col className="mb-3">
+              {
+                samples && samples.length ?
+                <Table className="table-sm text-sm">
+                  <thead>
+                    <tr className="nowrap">
+                      <th onClick={() => sortSamples("name")}><span role="button">Identifier ↓</span></th>
+                      <th>Status</th>
+                      <th onClick={() => sortSamples("parent_area_name")}><span role="button">Site ↓</span></th>
+                      <th onClick={() => sortSamples("area_name")}><span role="button">Locality ↓</span></th>
+                      <th onClick={() => sortSamples("event_begin")}><span role="button">Collected ↓</span></th>
+                      <th>Size (ml)</th>
+                      <th>Blank</th>
+                      <th>DNA<br/>(ng/μl)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    { samples.filter(sample => sample.display).map((sample) => <tr key={sample.name}>
+                      <td>{sample.name}</td>
+                      <td><span className={statusClass(sample.status) + " badge"}>{sample.status}</span></td>
+                      <td>{sample.parent_area_name}</td>
+                      <td>{sample.area_name}</td>
+                      <td className="nowrap">{sample.event_begin}</td>
+                      <td>{sample.size}</td>
+                      <td>{sample.blank ? "yes" : ""}</td>
+                      <td>
+                      { sample.dnas.map((dna) => <span key={dna.plutof_id}>{dna.concentration}</span> )}
+                      </td>
+                    </tr>) }
+                  </tbody>
+                </Table> : <p>No samples found.</p>
+              }
+            </Col>
+          </Row>
+      }
+      { species &&
         <Row>
           <Col className="mb-3">
-            {
-              samples.length ?
-              <Table className="table-sm text-sm">
+            <h4><span className="close" onClick={() => setSpecies(null)}><X/></span> Fish, mammal, and turtle species in OBIS ({species.species.length})</h4>
+            { species.species.length ?
+              <Table className="mt-3 table-sm text-sm">
                 <thead>
                   <tr className="nowrap">
-                    <th onClick={() => sortSamples("name")}><span role="button">Identifier ↓</span></th>
-                    <th>Status</th>
-                    <th onClick={() => sortSamples("parent_area_name")}><span role="button">Site ↓</span></th>
-                    <th onClick={() => sortSamples("area_name")}><span role="button">Locality ↓</span></th>
-                    <th onClick={() => sortSamples("event_begin")}><span role="button">Collected ↓</span></th>
-                    <th>Size (ml)</th>
-                    <th>Blank</th>
-                    <th>DNA<br/>(ng/μl)</th>
+                    <th>Phylum</th>
+                    <th>Class</th>
+                    <th>Order</th>
+                    <th>Family</th>
+                    <th>Species</th>
+                    <th>Group</th>
+                    <th>Last observed</th>
                   </tr>
                 </thead>
                 <tbody>
-                  { samples.filter(sample => sample.display).map((sample) => <tr key={sample.name}>
-                    <td>{sample.name}</td>
-                    <td><span className={statusClass(sample.status) + " badge"}>{sample.status}</span></td>
-                    <td>{sample.parent_area_name}</td>
-                    <td>{sample.area_name}</td>
-                    <td className="nowrap">{sample.event_begin}</td>
-                    <td>{sample.size}</td>
-                    <td>{sample.blank ? "yes" : ""}</td>
-                    <td>
-                    { sample.dnas.map((dna) => <span key={dna.plutof_id}>{dna.concentration}</span> )}
-                    </td>
+                  { species.species.map((sp) => <tr key={sp.scientificName}>
+                    <td>{sp.phylum}</td>
+                    <td>{sp.class}</td>
+                    <td>{sp.order}</td>
+                    <td>{sp.family}</td>
+                    <td>{sp.species}</td>
+                    <td>{sp.group}</td>
+                    <td>{sp.max_year}</td>
                   </tr>) }
                 </tbody>
-              </Table> :
-              <p>Loading sample data...</p>
+              </Table> : <p>No species found.</p>
             }
           </Col>
         </Row>
+      }
       </Container>
       <footer className="footer mt-auto pt-5 pb-5 bg-light">
         <Container>

@@ -81,3 +81,18 @@ code {
   width: 250px;
   opacity: 1;
 }
+
+.close {
+  font-size: 1.4em;
+  cursor: pointer;
+}
+
+a, .a {
+  text-decoration: none !important;
+  color: #00aee3 !important;
+  cursor: pointer;
+}
+
+.navbar-brand {
+  color: rgba(0, 0, 0, 0.9) !important;
+}
