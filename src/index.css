@@ -96,3 +96,38 @@ a, .a {
 .navbar-brand {
   color: rgba(0, 0, 0, 0.9) !important;
 }
+
+.badge-vu {
+  background-color: #FAC241 !important;
+  color: #ffffff;
+}
+
+.badge-en {
+  background-color: #ff9900 !important;
+  color: #ffffff;
+}
+
+.badge-cr {
+  background-color: #cc3300 !important;
+  color: #ffffff;
+}
+
+.badge-ew {
+  background-color: #000000 !important;
+  color: #ffffff;
+}
+
+.badge-ex {
+  background-color: #000000 !important;
+  color: #ff0000;
+}
+
+.badge-lc {
+  background-color: #cccc00 !important;
+  color: #ffffff;
+}
+
+.badge-dd {
+  background-color: #eeeeee !important;
+  color: #000000;
+}

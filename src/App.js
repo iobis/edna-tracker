@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Navbar, Container, Row, Col, Table } from "react-bootstrap";
+import { Navbar, Container, Row, Col, Table, Badge } from "react-bootstrap";
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, GeoJSON } from "react-leaflet";
 import MarkerClusterGroup from "@changey/react-leaflet-markercluster";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -265,6 +265,28 @@ function App() {
     }
   }
 
+  function redlist_classname(category) {
+    if (category === "LC") {  
+      return "badge badge-lc";
+    } else if (category === "NT") {
+      return "badge badge-lc";
+    } else if (category === "VU") {  
+      return "badge badge-vu";
+    } else if (category === "EN") {  
+      return "badge badge-en";
+    } else if (category === "CR") {  
+      return "badge badge-cr";
+    } else if (category === "EW") {  
+      return "badge badge-ew";
+    } else if (category === "EX") {  
+      return "badge badge-ex";
+    } else if (category === "DD") {  
+      return "badge badge-dd";
+    } else if (category === "NE") {  
+      return "badge badge-ne";
+    }
+  }
+
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -421,7 +443,7 @@ function App() {
                     <td>{sp.order}</td>
                     <td>{sp.family}</td>
                     <td>{sp.species}</td>
-                    <td>{sp.redlist_category}</td>
+                    <td><span className={redlist_classname(sp.redlist_category)}>{sp.redlist_category}</span></td>
                     <td>{sp.group}</td>
                     <td>{sp.max_year}</td>
                   </tr>) }
