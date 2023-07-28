@@ -398,7 +398,7 @@ function App() {
       { species &&
         <Row>
           <Col className="mb-3">
-            <h4><span className="close" onClick={() => setSpecies(null)}><X/></span> Fish, mammal, and turtle species in OBIS ({species.species.length})</h4>
+            <h4><span className="close" onClick={() => setSpecies(null)}><X/></span> Fish, mammal, and turtle species in OBIS ({species.species.length.toLocaleString("en-US")})</h4>
             <p>This is a list of fish, mammal, and turtle species observed at the site according to the Ocean Biodiversity Information System (OBIS). Data can be very incomplete for some sites. The eDNA Expeditions project is in the process of mobilizing biodiversity datasets from the World Heritage sites to improve completeness.</p>
             { species.species.length ?
               <Table className="mt-3 table-sm text-sm">
