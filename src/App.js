@@ -408,6 +408,7 @@ function App() {
                     <th>Order</th>
                     <th>Family</th>
                     <th>Species</th>
+                    <th>Red List</th>
                     <th>Group</th>
                     <th>Last observed</th>
                   </tr>
@@ -419,6 +420,7 @@ function App() {
                     <td>{sp.order}</td>
                     <td>{sp.family}</td>
                     <td>{sp.species}</td>
+                    <td>{sp.redlist_category}</td>
                     <td>{sp.group}</td>
                     <td>{sp.max_year}</td>
                   </tr>) }
