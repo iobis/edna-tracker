@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Navbar, Container, Row, Col, Table, Badge } from "react-bootstrap";
+import { Navbar, Container, Row, Col, Table } from "react-bootstrap";
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, GeoJSON } from "react-leaflet";
 import MarkerClusterGroup from "@changey/react-leaflet-markercluster";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,7 +11,7 @@ import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import L from "leaflet";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Link45deg, X, FileText } from "react-bootstrap-icons";
+import { Link45deg, X, FileText, Book } from "react-bootstrap-icons";
 
 Highcharts.setOptions({ credits: { enabled: false } });
 const { BaseLayer } = LayersControl;
@@ -374,6 +374,9 @@ function App() {
               <p>
                 <Link45deg /> <a href={site.url} target="_blank">{ site.url }</a>
                 <FileText className="ms-3" /> <span className="a" onClick={showSpecies}>OBIS species list</span>
+                {
+                  site.article && <span className="ms-3"><Book /> <a href={site.article} target="_blank">read article</a></span>
+                }
               </p>
             </Col>
             <Col className="mb-2">
