@@ -27,3 +27,4 @@
 
 - <https://github.com/iobis/edna-tracker-data>
 - <https://github.com/iobis/mwhs-obis-species>
+- <https://github.com/iobis/edna-species-lists> (private)
