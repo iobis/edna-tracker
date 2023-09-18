@@ -22,154 +22,16 @@ L.Icon.Default.mergeOptions({
   shadowUrl: iconShadow,
 });
 
-function countValues(arr, prop) {
-  return arr.reduce((acc, obj) => {
-    const val = obj[prop];
-    acc[val] = (acc[val] || 0) + 1;
-    return acc;
-  }, {});
-}
+function Samples({sites, samples, setSamples, geo, site, siteId, query, handleSiteChange, handleQueryChange, concentrationChart, statusChart}) {
 
-function Samples() {
-
-  const [query, setQuery] = useState("");
-  const [created, setCreated] = useState("");
-  const [siteId, setSiteId] = useState("");
-  const [site, setSite] = useState(null);
-  const [geo, setGeo] = useState(null);
-  const [sites, setSites] = useState([]);
-  const [samples, setSamples] = useState([]);
   const [species, setSpecies] = useState(null);
-  const [statusChart, setStatusChart] = useState(
-    {
-      chart: { type: "bar", height: "200px" },
-      xAxis: { labels: { formatter: function() { return "Status" }}, categories: ["registered",  "collected", "extracted", "sequenced"] },
-      yAxis: { title: null },
-      legend: { reversed: false },
-      plotOptions: { series: { stacking: "normal" }},
-      colors: [ "#85A389", "#468B97", "#F3AA60", "#EF6262" ],
-      title: null,
-      series: []
-    }
-  );
-  const [concentrationChart, setConcentrationChart] = useState(
-    {
-      chart: { type: "scatter", height: "200px" },
-      title: null,
-      yAxis: { title: { text: "DNA concentration (ng/μl)" } },
-      xAxis: { categories: ["Sample", "Blank"] },
-      plotOptions: {
-        scatter: {
-          showInLegend: false,
-          jitter: {
-              x: 0.1,
-              y: 0
-          },
-          marker: {
-              radius: 2,
-              symbol: "circle",
-              fillColor: "#EF6262"
-          },
-          tooltip: {
-              pointFormat: "Concentration (ng/μl): {point.y:.3f}"
-          }
-        }
-      },
-      series: []
-    }
-  );
   const geoRef = useRef(null);
-
-  function calculateConcentrationChart(new_samples) {
-    const concentrations = new_samples.filter(sample => sample.display).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
-    const concentrations_blank = new_samples.filter(sample => sample.display && sample.blank).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
-    const data = concentrations.map(conc => [0, conc]);
-    const data_blank = concentrations_blank.map(conc => [1, conc]);
-    setConcentrationChart({
-      ...concentrationChart,
-      series: [
-        {
-          name: "DNA concentration",
-          data: data
-        },
-        {
-          name: "DNA concentration blank",
-          data: data_blank
-        }
-      ]
-    });
-  }
-
-  function calculateStatusChart(new_samples) {
-    const counts = countValues(new_samples.filter(sample => sample.display), "status");
-    setStatusChart({
-      ...statusChart,
-      series: [
-        {
-          name: "sequenced",
-          data: [counts.sequenced ? counts.sequenced : 0],
-          legendIndex: 4
-        },
-        {
-          name: "extracted",
-          data: [counts.extracted ? counts.extracted : 0],
-          legendIndex: 3
-        },
-        {
-          name: "collected",
-          data: [counts.collected ? counts.collected : 0],
-          legendIndex: 2
-        },
-        {
-          name: "registered",
-          data: [counts.registered ? counts.registered : 0],
-          legendIndex: 1
-        },
-      ]
-    });
-  }
-
-  function showSample(sample, siteId, input) {
-    const site_ok = sample.parent_area_plutof_id.toString() === siteId || siteId === "";
-    const query = sample.name.toLowerCase().includes(input) || sample.area_name.toLowerCase().includes(input) || sample.parent_area_name.toLowerCase().includes(input) || input === "";
-    return site_ok && query;
-  }
-
-  function updateUrl(siteId, input) {
-    // window.history.replaceState(null, null, "?search=" + input +"&site=" + siteId);
-  }
-
-  function handleSiteChange(event) {
-    const parent_area_plutof_id = event.target.value;
-    setSiteId(parent_area_plutof_id);
-    setSite(sites[parent_area_plutof_id]);
-    filterSamples(samples, parent_area_plutof_id, query);
-    updateUrl(parent_area_plutof_id, query);
-    setSpecies(null);
-  }
-
-  function handleQueryChange(event) {
-    const input = event.target.value.toLowerCase();
-    setQuery(input);
-    filterSamples(samples, siteId, input);
-    updateUrl(siteId, input);
-  }
-
-  function filterSamples(samples, siteId, input) {
-    const new_samples = [...samples].map(sample => {
-      sample.display = showSample(sample, siteId, input);
-      return sample;
-    });
-    setSamples(new_samples);
-    calculateStatusChart(new_samples);
-    calculateConcentrationChart(new_samples);
-  };
 
   function showSpecies() {
     async function fetchSpecies() {
-      const res = await fetch("https://raw.githubusercontent.com/iobis/mwhs-obis-species/master/lists/" + site.simplified_name + ".json");
-      const data = await res.json();
-      setSpecies(data);
+      // const res = await fetch("https://raw.githubusercontent.com/iobis/mwhs-obis-species/master/lists/" + site.simplified_name + ".json");
+      // const data = await res.json();
+      // setSpecies(data);
     }
     fetchSpecies();
   }
@@ -186,55 +48,11 @@ function Samples() {
     }
   }
 
-  function getUrlParams() {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    return {
-      search: urlSearchParams.get("search") ? urlSearchParams.get("search") : "",
-      site: urlSearchParams.get("site") ? urlSearchParams.get("site") : ""
-    }
-  }
-
   useEffect(() => {
     if (geoRef.current) {
       geoRef.current.clearLayers().addData(geo);
     }
   }, [geo]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const params = getUrlParams();
-      const input = params.search;
-      const siteid = params.site;
-
-      const res = await fetch("https://raw.githubusercontent.com/iobis/edna-tracker-data/data/generated.json");
-      const data = await res.json();
-      data.samples.forEach(sample => {
-        sample.display = true;
-      });
-
-      setQuery(input);
-      setSiteId(siteid);
-      setCreated(data.created);
-      data.sites = data.sites.reduce((obj, item) => {
-        obj[item.plutof_id] = item;
-        return obj;
-      }, {});
-      setSites(data.sites);
-      if (siteid) {
-        setSite(data.sites[siteid]);
-      }
-      filterSamples(data.samples, siteid, input);
-      calculateStatusChart(data.samples);
-      calculateConcentrationChart(data.samples);
-    }
-    fetchData();
-    async function fetchGeo() {
-      const res = await fetch("sites.geojson");
-      const data = await res.json();
-      setGeo(data);
-    }
-    fetchGeo();
-  }, []);
 
   function sortSamples(column) {
     if (column === "event_begin") {
