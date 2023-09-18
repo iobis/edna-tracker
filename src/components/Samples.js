@@ -12,6 +12,7 @@ import L from "leaflet";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Link45deg, X, FileText, Book } from "react-bootstrap-icons";
+import SiteSelector from "./SiteSelector";
 
 Highcharts.setOptions({ credits: { enabled: false } });
 const { BaseLayer } = LayersControl;
@@ -156,15 +157,7 @@ function Samples({sites, samples, setSamples, geo, site, siteId, query, handleSi
       <Container className="mt-3 mb-3">
         <Row>
           <Col lg="4" className="mt-3 mb-3">
-            <div>
-              <label className="mb-2">Select World Heritage site</label>
-              <select className="form-select" value={siteId} onChange={handleSiteChange}>
-                <option value="">Select site</option>
-                {
-                  Object.values(sites).sort((a, b) => (a.name > b.name) ? 1 : -1).map((site) => <option key={site.plutof_id} value={site.plutof_id}>{site.name}</option>)
-                }
-              </select>
-            </div>
+            <SiteSelector sites={sites} siteId={siteId} handleSiteChange={handleSiteChange} />
             <div className="mt-3">
               <label className="mb-2">Search</label>
               <input value={query} onChange={handleQueryChange} className="form-control" type="text" placeholder="Search" />
