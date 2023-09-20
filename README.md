@@ -5,24 +5,24 @@
 ## Data sources
 
 ```
-                  ┌──────────┐
-                  │   eDNA   │
-                  │  species ├───────────┐
-                  │   lists  │           │
-                  └──────────┘           │
-                   action                ▼
-┌──────────┐      ┌──────────┐      ┌──────────┐
-│          │      │   eDNA   │      │   eDNA   │
-│  PlutoF  ├─────►│  tracker ├─────►│  tracker │
-│          │      │   data   │      │          │
-└──────────┘      └──────────┘      └──────────┘
- data entry        action                ▲ React
-                  ┌──────────┐           │
-                  │   MWHS   │           │
-                  │   OBIS   ├───────────┘
-                  │  species │
-                  └──────────┘
-                   action
+                 ┌──────────┐
+                 │          │ upload
+                 │ pipeline ├───────────┐
+                 │          │           │
+                 └──────────┘           │
+                                        ▼
+┌─────────┐      ┌──────────┐      ┌──────────┐
+│         │      │   MWHS   │      │   eDNA   │
+│   OBIS  ├─────►│   OBIS   ├─────►│  species ├───────────┐
+│         │      │  species │      │   lists  │           │
+└─────────┘      └──────────┘      └──────────┘           │
+                  action            action                ▼
+                 ┌──────────┐      ┌──────────┐      ┌──────────┐
+                 │          │      │   eDNA   │      │   eDNA   │
+                 │  PlutoF  ├─────►│  tracker ├─────►│  tracker │
+                 │          │      │   data   │      │          │
+                 └──────────┘      └──────────┘      └──────────┘
+                                    action                  React
 ```
 
 - <https://github.com/iobis/edna-tracker-data>
