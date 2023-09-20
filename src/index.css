@@ -93,7 +93,7 @@ a, .a {
   cursor: pointer;
 }
 
-.navbar-brand {
+.navbar-brand, .nav-link {
   color: rgba(0, 0, 0, 0.9) !important;
 }
 
@@ -130,4 +130,9 @@ a, .a {
 .badge-dd {
   background-color: #eeeeee !important;
   color: #000000;
+}
+
+.badge-count {
+  background-color: #eeeeee !important;
+  color: #999999 !important;
 }

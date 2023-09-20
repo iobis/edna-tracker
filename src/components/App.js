@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import { Routes, Route, Link } from "react-router-dom";
 import Samples from "./Samples";
-import Sites from "./Sites";
+import Species from "./Species";
 import { concentrationChartTemplate, statusChartTemplate } from "./charts";
 
 function App() {
@@ -62,7 +62,6 @@ function App() {
     setSite(sites[parent_area_plutof_id]);
     filterSamples(samples, parent_area_plutof_id, query);
     updateUrl(parent_area_plutof_id, query);
-    // setSpecies(null);
   }
 
   function handleQueryChange(event) {
@@ -167,7 +166,7 @@ function App() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Nav.Link as={Link} to="/">Samples</Nav.Link>
-              <Nav.Link as={Link} to="/sites">Sites</Nav.Link>
+              <Nav.Link as={Link} to="/species">Species lists</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -175,7 +174,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Samples sites={sites} samples={samples} setSamples={setSamples} geo={geo} site={site} siteId={siteId} query={query} handleQueryChange={handleQueryChange} handleSiteChange={handleSiteChange} concentrationChart={concentrationChart} statusChart={statusChart} />}></Route>
-        <Route path="/sites" element={<Sites />}></Route>
+        <Route path="/species" element={<Species sites={sites} siteId={siteId} handleSiteChange={handleSiteChange} />}></Route>
       </Routes>
 
       <footer className="footer mt-auto pt-5 pb-5 bg-light">
