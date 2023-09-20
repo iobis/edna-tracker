@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Container, Row, Col, Table } from "react-bootstrap";
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, GeoJSON } from "react-leaflet";
 import MarkerClusterGroup from "@changey/react-leaflet-markercluster";
@@ -12,6 +12,7 @@ import L from "leaflet";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Link45deg, X, FileText, Book } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import SiteSelector from "./SiteSelector";
 
 Highcharts.setOptions({ credits: { enabled: false } });
@@ -144,10 +145,10 @@ function Samples({sites, samples, setSamples, geo, site, siteId, query, handleSi
               <h2>{site.name}</h2>
               <p>
                 <Link45deg /> <a href={site.url} target="_blank">{ site.url }</a>
-                {/* <FileText className="ms-3" /> <span className="a" onClick={showSpecies}>OBIS species list</span>
+                <FileText className="ms-3" /> <Link to="species">OBIS species list</Link>
                 {
                   site.article && <span className="ms-3"><Book /> <a href={site.article} target="_blank">read article</a></span>
-                } */}
+                }
               </p>
             </Col>
           </Row>

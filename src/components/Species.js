@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import { Container, Row, Col, Table } from "react-bootstrap";
 import SiteSelector from "./SiteSelector";
 
