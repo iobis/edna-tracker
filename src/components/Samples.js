@@ -11,7 +11,7 @@ import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import L from "leaflet";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Link45deg, X, FileText, Book } from "react-bootstrap-icons";
+import { Link45deg, FileText, Book } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import SiteSelector from "./SiteSelector";
 
@@ -144,10 +144,10 @@ function Samples({sites, samples, setSamples, geo, site, siteId, query, handleSi
             <Col className="mb-2">
               <h2>{site.name}</h2>
               <p>
-                <Link45deg /> <a href={site.url} target="_blank">{ site.url }</a>
+                <Link45deg /> <a href={site.url} rel="noreferrer" target="_blank">{ site.url }</a>
                 <FileText className="ms-3" /> <Link to="species">OBIS species list</Link>
                 {
-                  site.article && <span className="ms-3"><Book /> <a href={site.article} target="_blank">read article</a></span>
+                  site.article && <span className="ms-3"><Book /> <a href={site.article} rel="noreferrer" target="_blank">read article</a></span>
                 }
               </p>
             </Col>

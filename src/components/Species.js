@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Container, Row, Col, Table } from "react-bootstrap";
 import SiteSelector from "./SiteSelector";
+import { Database, Droplet } from "react-bootstrap-icons";
 
 function Species({sites}) {
 
@@ -19,7 +20,7 @@ function Species({sites}) {
       setSiteId(parent_area_plutof_id);
       setSite(selectedSite);
       async function fetchSpecies(siteName) {
-        const res = await fetch("https://raw.githubusercontent.com/iobis/mwhs-obis-species/master/lists/" + siteName + ".json");
+        const res = await fetch("https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists/json/" + siteName + ".json");
         const data = await res.json();
         setSpecies(data);
       }
@@ -66,6 +67,7 @@ function Species({sites}) {
             <Table className="mt-3 table-sm text-sm">
               <thead>
                 <tr className="nowrap">
+                  <th></th>
                   <th>Phylum</th>
                   <th>Class</th>
                   <th>Order</th>
@@ -78,6 +80,7 @@ function Species({sites}) {
               </thead>
               <tbody>
                 { species.species.map((sp) => <tr key={sp.scientificName}>
+                  <td>{sp.source_obis && <Database />} {sp.source_dna && <Droplet />}</td>
                   <td>{sp.phylum}</td>
                   <td>{sp.class}</td>
                   <td>{sp.order}</td>
