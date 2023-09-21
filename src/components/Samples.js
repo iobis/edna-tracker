@@ -145,7 +145,7 @@ function Samples({sites, samples, setSamples, geo, site, siteId, query, handleSi
               <h2>{site.name}</h2>
               <p>
                 <Link45deg /> <a href={site.url} rel="noreferrer" target="_blank">{ site.url }</a>
-                <FileText className="ms-3" /> <Link to="species">OBIS species list</Link>
+                {/* <FileText className="ms-3" /> <Link to="species">OBIS species list</Link> */}
                 {
                   site.article && <span className="ms-3"><Book /> <a href={site.article} rel="noreferrer" target="_blank">read article</a></span>
                 }
