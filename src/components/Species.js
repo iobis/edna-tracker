@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Row, Col, Table, Modal, Button } from "react-bootstrap";
+import { Container, Row, Col, Table, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import SiteSelector from "./SiteSelector";
 import { Database, Droplet } from "react-bootstrap-icons";
 import FeedbackModal from "./FeedbackModal";
@@ -52,6 +52,12 @@ function Species({sites}) {
     }
   }
   
+  const databaseTooltip = <Tooltip>OBIS</Tooltip>;
+  const ednaTooltip = <Tooltip>eDNA Expeditions</Tooltip>;
+  const fishTooltip = <Tooltip>Fish</Tooltip>;
+  const mammalTooltip = <Tooltip>Mammal</Tooltip>;
+  const turtleTooltip = <Tooltip>Turtle</Tooltip>;
+
   return <div>
     { showFeedback && <FeedbackModal showFeedback={showFeedback} setShowFeedback={setShowFeedback} site={site} /> }
     <Container className="mt-3 mb-3">
@@ -84,14 +90,22 @@ function Species({sites}) {
               </thead>
               <tbody>
                 { species.species.map((sp) => <tr key={sp.AphiaID}>
-                  <td>{sp.source_obis && <Database />} {sp.source_dna && <Droplet />}</td>
+                  <td>
+                    {sp.source_obis && <OverlayTrigger placement="top" overlay={databaseTooltip}><Database /></OverlayTrigger>}
+                    {sp.source_dna && <OverlayTrigger placement="top" overlay={ednaTooltip}><Droplet /></OverlayTrigger>}
+                  </td>
                   <td>{sp.phylum}</td>
                   <td>{sp.class}</td>
                   <td>{sp.order}</td>
                   <td>{sp.family}</td>
                   <td>{sp.species}</td>
                   <td><span className={redlist_classname(sp.redlist_category)}>{sp.redlist_category}</span></td>
-                  <td>{sp.group}</td>
+                  {/* <td>{sp.group}</td> */}
+                  <td>
+                    { sp.group === "fish" && <OverlayTrigger placement="top" overlay={fishTooltip}><img src="fish.svg" width="20" height="20"></img></OverlayTrigger>}
+                    { sp.group === "mammal" && <OverlayTrigger placement="top" overlay={mammalTooltip}><img src="mammal.svg" width="20" height="20"></img></OverlayTrigger>}
+                    { sp.group === "turtle" && <OverlayTrigger placement="top" overlay={turtleTooltip}><img src="turtle.svg" width="20" height="20"></img></OverlayTrigger>}
+                  </td>
                   <td>{sp.max_year}</td>
                 </tr>) }
               </tbody>
