@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { Container, Row, Col, Table } from "react-bootstrap";
+import { Container, Row, Col, Table, Modal, Button } from "react-bootstrap";
 import SiteSelector from "./SiteSelector";
 import { Database, Droplet } from "react-bootstrap-icons";
+import FeedbackModal from "./FeedbackModal";
 
 function Species({sites}) {
 
   const [species, setSpecies] = useState(null);
   const [siteId, setSiteId] = useState("");
   const [site, setSite] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   function handleSiteChange(event) {
     const parent_area_plutof_id = event.target.value;
@@ -51,6 +53,7 @@ function Species({sites}) {
   }
   
   return <div>
+    { showFeedback && <FeedbackModal showFeedback={showFeedback} setShowFeedback={setShowFeedback} site={site} /> }
     <Container className="mt-3 mb-3">
       <Row>
         <Col lg="4" className="mt-3 mb-3">
@@ -63,6 +66,7 @@ function Species({sites}) {
           <Col className="mb-3">
           <h4>Fish, mammal, and turtle species in OBIS for {site.name} <span className="ms-2 badge badge-count">{species.species.length.toLocaleString("en-US")}</span></h4>
           <p>This is a list of fish, mammal, and turtle species observed at the site according to the Ocean Biodiversity Information System (OBIS). Data can be very incomplete for some sites. The eDNA Expeditions project is in the process of mobilizing biodiversity datasets from the World Heritage sites to improve completeness.</p>
+          <Button variant="secondary" onClick={() => setShowFeedback(true)}>Provide feedback</Button>
           { species.species.length ?
             <Table className="mt-3 table-sm text-sm">
               <thead>
@@ -79,7 +83,7 @@ function Species({sites}) {
                 </tr>
               </thead>
               <tbody>
-                { species.species.map((sp) => <tr key={sp.scientificName}>
+                { species.species.map((sp) => <tr key={sp.AphiaID}>
                   <td>{sp.source_obis && <Database />} {sp.source_dna && <Droplet />}</td>
                   <td>{sp.phylum}</td>
                   <td>{sp.class}</td>
