@@ -11,6 +11,12 @@ function Species({sites}) {
   const [site, setSite] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
 
+  function downloadUrl() {
+    const selectedSite = sites[siteId];
+    const url = "https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists/csv/" + selectedSite.simplified_name + ".csv";
+    return url;
+  }
+
   function handleSiteChange(event) {
     const parent_area_plutof_id = event.target.value;
     if (parent_area_plutof_id === "") {
@@ -73,6 +79,8 @@ function Species({sites}) {
             <h4>Fish, mammal, and turtle species in OBIS for {site.name} <span className="ms-2 badge badge-count">{species.species.length.toLocaleString("en-US")}</span></h4>
             <p>This is a list of fish, mammal, and turtle species observed at the site according to the Ocean Biodiversity Information System (OBIS). Data can be very incomplete for some sites. The eDNA Expeditions project is in the process of mobilizing biodiversity datasets from the World Heritage sites to improve completeness.</p>
             <Button variant="secondary" onClick={() => setShowFeedback(true)}>Provide feedback</Button>
+            <a className="ms-2" href={downloadUrl()} target="_blank"><Button variant="light">Download list</Button></a>
+            
             <div className="mt-3">
               { species.species.length ?
                 <Table className="mt-3 table-sm text-sm">

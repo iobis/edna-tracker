@@ -148,3 +148,8 @@ a, .a {
   background-color: #FAC241 !important;
   color: #000000 !important;
 }
+
+.btn-light {
+  border: 0px !important;
+  background-color: #eeeeee !important;
+}
