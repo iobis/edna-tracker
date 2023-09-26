@@ -1,11 +1,11 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 
-function FeedbackModal({showFeedback, setShowFeedback, site}) {
+function FeedbackModal({showFeedback, setShowFeedback, site, reviewed}) {
 
   const [issue, setIssue] = useState({
     email: "",
-    title: "",
+    title: reviewed ? site.name + " species list reviewed" : "",
     message: ""
   });
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -65,7 +65,7 @@ function FeedbackModal({showFeedback, setShowFeedback, site}) {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Title</Form.Label>
-        <Form.Control disabled={formDisabled} type="text" placeholder="Enter title" name="title" value={issue.title} onChange={handleChange} />
+        <Form.Control disabled={formDisabled || reviewed} type="text" placeholder="Enter title" name="title" value={issue.title} onChange={handleChange} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Message</Form.Label>

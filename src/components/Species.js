@@ -9,6 +9,7 @@ function Species({sites}) {
   const [species, setSpecies] = useState(null);
   const [siteId, setSiteId] = useState("");
   const [site, setSite] = useState(null);
+  const [reviewed, setReviewed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
 
   function downloadUrl() {
@@ -71,8 +72,18 @@ function Species({sites}) {
     </div>
   }
 
+  function markReviewed() {
+    setReviewed(true);
+    setShowFeedback(true);
+  }
+
+  function provideFeedback() {
+    setReviewed(false);
+    setShowFeedback(true);
+  }
+
   return <div>
-    { showFeedback && <FeedbackModal showFeedback={showFeedback} setShowFeedback={setShowFeedback} site={site} /> }
+    { showFeedback && <FeedbackModal showFeedback={showFeedback} setShowFeedback={setShowFeedback} site={site} reviewed={reviewed} /> }
     <Container className="mt-3 mb-3">
       <Row>
         <Col lg="4" className="mt-3 mb-3">
@@ -85,7 +96,8 @@ function Species({sites}) {
           <Col>
             <h4>Fish, mammal, and turtle species in OBIS for {site.name} <span className="ms-2 badge badge-count">{species.species.length.toLocaleString("en-US")}</span></h4>
             <p>This is a list of fish, mammal, and turtle species observed at the site according to the Ocean Biodiversity Information System (OBIS). Data can be very incomplete for some sites. The eDNA Expeditions project is in the process of mobilizing biodiversity datasets from the World Heritage sites to improve completeness.</p>
-            <Button variant="secondary" onClick={() => setShowFeedback(true)}>Provide feedback</Button>
+            <Button variant="secondary" onClick={provideFeedback}>Provide feedback</Button>
+            <Button className="ms-2" variant="primary" onClick={markReviewed}>Mark as reviewed</Button>
             <a className="ms-2" rel="noreferrer" href={downloadUrl()} target="_blank"><Button variant="light">Download list</Button></a>
           </Col>
         </Row>
