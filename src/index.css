@@ -153,3 +153,13 @@ a, .a {
   border: 0px !important;
   background-color: #eeeeee !important;
 }
+
+.statistic .number {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.statistic .label {
+  font-size: 0.9em;
+  color: #999999;
+}

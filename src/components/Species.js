@@ -64,6 +64,13 @@ function Species({sites}) {
   const mammalTooltip = <Tooltip>Mammal</Tooltip>;
   const turtleTooltip = <Tooltip>Turtle</Tooltip>;
 
+  function statistic(number, label) {
+    return <div className="statistic">
+      <div className="number">{number ? number : 0}</div>
+      <div className="label">{label}</div>
+    </div>
+  }
+
   return <div>
     { showFeedback && <FeedbackModal showFeedback={showFeedback} setShowFeedback={setShowFeedback} site={site} /> }
     <Container className="mt-3 mb-3">
@@ -75,52 +82,66 @@ function Species({sites}) {
       </Row>
       { species &&
         <Row className="mt-3">
-          <Col className="mb-3">
+          <Col>
             <h4>Fish, mammal, and turtle species in OBIS for {site.name} <span className="ms-2 badge badge-count">{species.species.length.toLocaleString("en-US")}</span></h4>
             <p>This is a list of fish, mammal, and turtle species observed at the site according to the Ocean Biodiversity Information System (OBIS). Data can be very incomplete for some sites. The eDNA Expeditions project is in the process of mobilizing biodiversity datasets from the World Heritage sites to improve completeness.</p>
             <Button variant="secondary" onClick={() => setShowFeedback(true)}>Provide feedback</Button>
-            <a className="ms-2" href={downloadUrl()} target="_blank"><Button variant="light">Download list</Button></a>
-            
-            <div className="mt-3">
-              { species.species.length ?
-                <Table className="mt-3 table-sm text-sm">
-                  <thead>
-                    <tr className="nowrap">
-                      <th></th>
-                      <th>Phylum</th>
-                      <th>Class</th>
-                      <th>Order</th>
-                      <th>Family</th>
-                      <th>Species</th>
-                      <th>Red List</th>
-                      <th>Group</th>
-                      <th>Last observed</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    { species.species.map((sp) => <tr key={sp.AphiaID}>
-                      <td>
-                        {sp.source_obis && <OverlayTrigger placement="top" overlay={databaseTooltip}><Database /></OverlayTrigger>}
-                        {sp.source_dna && <OverlayTrigger placement="top" overlay={ednaTooltip}><Droplet /></OverlayTrigger>}
-                      </td>
-                      <td>{sp.phylum}</td>
-                      <td>{sp.class}</td>
-                      <td>{sp.order}</td>
-                      <td>{sp.family}</td>
-                      <td>{sp.species}</td>
-                      <td><span className={redlist_classname(sp.redlist_category)}>{sp.redlist_category}</span></td>
-                      {/* <td>{sp.group}</td> */}
-                      <td>
-                        { sp.group === "fish" && <OverlayTrigger placement="top" overlay={fishTooltip}><img src="fish.svg" width="20" height="20"></img></OverlayTrigger>}
-                        { sp.group === "mammal" && <OverlayTrigger placement="top" overlay={mammalTooltip}><img src="mammal.svg" width="20" height="20"></img></OverlayTrigger>}
-                        { sp.group === "turtle" && <OverlayTrigger placement="top" overlay={turtleTooltip}><img src="turtle.svg" width="20" height="20"></img></OverlayTrigger>}
-                      </td>
-                      <td>{sp.max_year}</td>
-                    </tr>) }
-                  </tbody>
-                </Table> : <p>No species found.</p>
-              }
-            </div>
+            <a className="ms-2" rel="noreferrer" href={downloadUrl()} target="_blank"><Button variant="light">Download list</Button></a>
+          </Col>
+        </Row>
+      }
+      { species &&
+        <Row className="mt-4">
+          <Col className="mb-3">{statistic(species.stats.groups.fish, "Fish species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.groups.mammal, "Mammal species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.groups.turtle, "Turtle species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.redlist, "Vulnerable species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.source.obis, "From OBIS")}</Col>
+          <Col className="mb-3">{statistic(species.stats.source.edna, "From eDNA")}</Col>
+          <Col className="mb-3">{statistic(species.stats.source.both, "OBIS & eDNA")}</Col>
+        </Row>
+      }
+      { species &&
+        <Row>
+          <Col className="mt-3 mb-3">
+            { species.species.length ?
+              <Table className="table-sm text-sm">
+                <thead>
+                  <tr className="nowrap">
+                    <th></th>
+                    <th>Phylum</th>
+                    <th>Class</th>
+                    <th>Order</th>
+                    <th>Family</th>
+                    <th>Species</th>
+                    <th>Red List</th>
+                    <th>Group</th>
+                    <th>Last observed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { species.species.map((sp) => <tr key={sp.AphiaID}>
+                    <td>
+                      {sp.source_obis && <OverlayTrigger placement="top" overlay={databaseTooltip}><Database /></OverlayTrigger>}
+                      {sp.source_dna && <OverlayTrigger placement="top" overlay={ednaTooltip}><Droplet /></OverlayTrigger>}
+                    </td>
+                    <td>{sp.phylum}</td>
+                    <td>{sp.class}</td>
+                    <td>{sp.order}</td>
+                    <td>{sp.family}</td>
+                    <td>{sp.species}</td>
+                    <td><span className={redlist_classname(sp.redlist_category)}>{sp.redlist_category}</span></td>
+                    {/* <td>{sp.group}</td> */}
+                    <td>
+                      { sp.group === "fish" && <OverlayTrigger placement="top" overlay={fishTooltip}><img alt="fish" src="fish.svg" width="20" height="20"></img></OverlayTrigger>}
+                      { sp.group === "mammal" && <OverlayTrigger placement="top" overlay={mammalTooltip}><img alt="mammal" src="mammal.svg" width="20" height="20"></img></OverlayTrigger>}
+                      { sp.group === "turtle" && <OverlayTrigger placement="top" overlay={turtleTooltip}><img alt="turtle" src="turtle.svg" width="20" height="20"></img></OverlayTrigger>}
+                    </td>
+                    <td>{sp.max_year}</td>
+                  </tr>) }
+                </tbody>
+              </Table> : <p>No species found.</p>
+            }
           </Col>
         </Row>
       }
