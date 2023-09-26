@@ -185,7 +185,7 @@ function App() {
           </Col>
           <Col lg={true}>
             <p className="text-muted">Environmental DNA Expeditions is a global, citizen science initiative that will help measure marine biodiversity, and the impacts climate change might have on the distribution patterns of marine life, across UNESCO World Heritage marine sites.</p>
-            <p className="text-muted">Data last updated XXXXX.</p>
+            <p className="text-muted">Data last updated {created}.</p>
           </Col>
         </Row>
         </Container>
