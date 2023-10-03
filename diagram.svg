@@ -1,0 +1,134 @@
+<svg version="1.1" baseProfile="full" width="538.5" height="332.0" viewbox="0 0 538.5 332" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+		<desc >[&lt;database&gt; OBIS] -&gt; [MWHS OBIS species]
+	[MWHS OBIS species] -&gt; [eDNA species lists]
+	[pipeline] -&gt; [eDNA species lists]
+	[&lt;database&gt; raw reads] -&gt; [pipeline]
+	[eDNA species lists] -&gt; [eDNA tracker]
+	[eDNA tracker data] -&gt; [eDNA tracker]
+	[&lt;database&gt; PlutoF] -&gt; [eDNA tracker data]</desc>
+	<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="bold" font-style="normal">
+			<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+				<g stroke="transparent" fill="transparent">
+					<rect x="0.0" y="0.0" height="332.0" width="538.5" stroke="none"></rect>
+				</g>
+			<g transform="translate(8, 8)" fill="#33322E">
+					<g transform="translate(20, 20)" fill="#33322E" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+						<path d="M86.5 47.0 L86.5 67 L86.5 88.33333333333333 L86.5 88.3 " fill="none"></path>
+					<path d="M81.2 81.7 L86.5 88.3 L91.8 81.7 L86.5 95.0 Z"></path>
+					<path d="M86.5 126.0 L86.5 154 L126.71715090217393 171.35816239546716 L126.7 171.4 " fill="none"></path>
+					<path d="M118.5 173.6 L126.7 171.4 L122.7 163.8 L132.8 174.0 Z"></path>
+					<path d="M251.0 126.0 L251 154 L210.78284909782607 171.35816239546716 L210.8 171.4 " fill="none"></path>
+					<path d="M214.8 163.8 L210.8 171.4 L219.0 173.6 L204.7 174.0 Z"></path>
+					<path d="M251.0 47.0 L251 67 L251 88.33333333333333 L251.0 88.3 " fill="none"></path>
+					<path d="M245.7 81.7 L251.0 88.3 L256.3 81.7 L251.0 95.0 Z"></path>
+					<path d="M168.8 205.0 L168.75 225 L217.971187098816 242.73961565490322 L218.0 242.7 " fill="none"></path>
+					<path d="M209.9 245.5 L218.0 242.7 L213.5 235.5 L224.2 245.0 Z"></path>
+					<path d="M405.0 205.0 L405 225 L332.20573047786974 243.7600476808394 L332.2 243.8 " fill="none"></path>
+					<path d="M337.3 236.9 L332.2 243.8 L340.0 247.3 L325.8 245.4 Z"></path>
+					<path d="M405.0 134.0 L405 154 L405 167.33333333333334 L405.0 167.3 " fill="none"></path>
+					<path d="M399.7 160.7 L405.0 167.3 L410.3 160.7 L405.0 174.0 Z"></path>
+					<g data-name="OBIS">
+							<g fill="#eee8d5" stroke="#33322E" data-name="OBIS">
+								<rect x="59.0" y="8.0" height="31.0" width="55.0" stroke="none" data-name="OBIS"></rect>
+							<path d="M59.0 8.0 L59.0 39.0" fill="none" data-name="OBIS"></path>
+							<path d="M114.0 8.0 L114.0 39.0" fill="none" data-name="OBIS"></path>
+							<ellipse cx="86.5" cy="8.0" rx="27.5" ry="6.0" data-name="OBIS"></ellipse>
+							<path d="M114.0 39.0 L114.0 39.3 L113.9 39.6 L113.7 39.9 L113.5 40.2 L113.1 40.5 L112.8 40.8 L112.3 41.1 L111.8 41.3 L111.3 41.6 L110.7 41.9 L110.0 42.1 L109.2 42.4 L108.4 42.6 L107.6 42.9 L106.7 43.1 L105.7 43.3 L104.7 43.5 L103.6 43.7 L102.6 43.9 L101.4 44.0 L100.2 44.2 L99.0 44.3 L97.8 44.5 L96.5 44.6 L95.3 44.7 L93.9 44.8 L92.6 44.8 L91.3 44.9 L89.9 45.0 L88.6 45.0 L87.2 45.0 L85.8 45.0 L84.4 45.0 L83.1 45.0 L81.7 44.9 L80.4 44.8 L79.1 44.8 L77.7 44.7 L76.5 44.6 L75.2 44.5 L74.0 44.3 L72.7 44.2 L71.6 44.0 L70.4 43.9 L69.4 43.7 L68.3 43.5 L67.3 43.3 L66.3 43.1 L65.4 42.9 L64.6 42.6 L63.8 42.4 L63.0 42.1 L62.3 41.9 L61.7 41.6 L61.2 41.3 L60.7 41.1 L60.2 40.8 L59.9 40.5 L59.5 40.2 L59.3 39.9 L59.1 39.6 L59.0 39.3 L59.0 39.0" data-name="OBIS"></path>
+							</g>
+						<g transform="translate(59, 12)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="OBIS">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="OBIS">
+									<text x="19.5" y="13.5" stroke="none" text-anchor="middle" data-name="OBIS">OBIS</text>
+								
+								</g>
+							</g>
+						</g>
+					<g data-name="MWHS OBIS species">
+							<g fill="#eee8d5" stroke="#33322E" data-name="MWHS OBIS species">
+								<rect x="0.0" y="95.0" height="31.0" width="173.0" data-name="MWHS OBIS species"></rect>
+							</g>
+						<g transform="translate(0, 95)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="MWHS OBIS species">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MWHS OBIS species">
+									<text x="78.5" y="13.5" stroke="none" text-anchor="middle" data-name="MWHS OBIS species">MWHS OBIS species</text>
+								
+								</g>
+							</g>
+						</g>
+					<g data-name="eDNA species lists">
+							<g fill="#eee8d5" stroke="#33322E" data-name="eDNA species lists">
+								<rect x="89.3" y="174.0" height="31.0" width="159.0" data-name="eDNA species lists"></rect>
+							</g>
+						<g transform="translate(89.25, 174)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="eDNA species lists">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="eDNA species lists">
+									<text x="71.5" y="13.5" stroke="none" text-anchor="middle" data-name="eDNA species lists">eDNA species lists</text>
+								
+								</g>
+							</g>
+						</g>
+					<g data-name="pipeline">
+							<g fill="#eee8d5" stroke="#33322E" data-name="pipeline">
+								<rect x="213.0" y="95.0" height="31.0" width="76.0" data-name="pipeline"></rect>
+							</g>
+						<g transform="translate(213, 95)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="pipeline">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="pipeline">
+									<text x="30.0" y="13.5" stroke="none" text-anchor="middle" data-name="pipeline">pipeline</text>
+								
+								</g>
+							</g>
+						</g>
+					<g data-name="raw reads">
+							<g fill="#eee8d5" stroke="#33322E" data-name="raw reads">
+								<rect x="205.5" y="8.0" height="31.0" width="91.0" stroke="none" data-name="raw reads"></rect>
+							<path d="M205.5 8.0 L205.5 39.0" fill="none" data-name="raw reads"></path>
+							<path d="M296.5 8.0 L296.5 39.0" fill="none" data-name="raw reads"></path>
+							<ellipse cx="251.0" cy="8.0" rx="45.5" ry="6.0" data-name="raw reads"></ellipse>
+							<path d="M296.5 39.0 L296.4 39.3 L296.3 39.6 L296.0 39.9 L295.6 40.2 L295.1 40.5 L294.5 40.8 L293.8 41.1 L292.9 41.3 L292.0 41.6 L291.0 41.9 L289.8 42.1 L288.6 42.4 L287.3 42.6 L285.9 42.9 L284.4 43.1 L282.8 43.3 L281.1 43.5 L279.4 43.7 L277.6 43.9 L275.7 44.0 L273.7 44.2 L271.8 44.3 L269.7 44.5 L267.6 44.6 L265.5 44.7 L263.3 44.8 L261.1 44.8 L258.9 44.9 L256.7 45.0 L254.4 45.0 L252.1 45.0 L249.9 45.0 L247.6 45.0 L245.3 45.0 L243.1 44.9 L240.9 44.8 L238.7 44.8 L236.5 44.7 L234.4 44.6 L232.3 44.5 L230.2 44.3 L228.2 44.2 L226.3 44.0 L224.4 43.9 L222.6 43.7 L220.9 43.5 L219.2 43.3 L217.6 43.1 L216.1 42.9 L214.7 42.6 L213.4 42.4 L212.2 42.1 L211.0 41.9 L210.0 41.6 L209.1 41.3 L208.2 41.1 L207.5 40.8 L206.9 40.5 L206.4 40.2 L206.0 39.9 L205.7 39.6 L205.6 39.3 L205.5 39.0" data-name="raw reads"></path>
+							</g>
+						<g transform="translate(205.5, 12)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="raw reads">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="raw reads">
+									<text x="37.5" y="13.5" stroke="none" text-anchor="middle" data-name="raw reads">raw reads</text>
+								
+								</g>
+							</g>
+						</g>
+					<g data-name="eDNA tracker">
+							<g fill="#eee8d5" stroke="#33322E" data-name="eDNA tracker">
+								<rect x="208.8" y="245.0" height="31.0" width="117.0" data-name="eDNA tracker"></rect>
+							</g>
+						<g transform="translate(208.75, 245)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="eDNA tracker">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="eDNA tracker">
+									<text x="50.5" y="13.5" stroke="none" text-anchor="middle" data-name="eDNA tracker">eDNA tracker</text>
+								
+								</g>
+							</g>
+						</g>
+					<g data-name="eDNA tracker data">
+							<g fill="#eee8d5" stroke="#33322E" data-name="eDNA tracker data">
+								<rect x="327.5" y="174.0" height="31.0" width="155.0" data-name="eDNA tracker data"></rect>
+							</g>
+						<g transform="translate(327.5, 174)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="eDNA tracker data">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="eDNA tracker data">
+									<text x="69.5" y="13.5" stroke="none" text-anchor="middle" data-name="eDNA tracker data">eDNA tracker data</text>
+								
+								</g>
+							</g>
+						</g>
+					<g data-name="PlutoF">
+							<g fill="#eee8d5" stroke="#33322E" data-name="PlutoF">
+								<rect x="372.0" y="95.0" height="31.0" width="66.0" stroke="none" data-name="PlutoF"></rect>
+							<path d="M372.0 95.0 L372.0 126.0" fill="none" data-name="PlutoF"></path>
+							<path d="M438.0 95.0 L438.0 126.0" fill="none" data-name="PlutoF"></path>
+							<ellipse cx="405.0" cy="95.0" rx="33.0" ry="6.0" data-name="PlutoF"></ellipse>
+							<path d="M438.0 126.0 L438.0 126.3 L437.8 126.6 L437.6 126.9 L437.3 127.2 L437.0 127.5 L436.5 127.8 L436.0 128.1 L435.4 128.3 L434.7 128.6 L434.0 128.9 L433.2 129.1 L432.3 129.4 L431.3 129.6 L430.3 129.9 L429.2 130.1 L428.0 130.3 L426.8 130.5 L425.6 130.7 L424.3 130.9 L422.9 131.0 L421.5 131.2 L420.1 131.3 L418.6 131.5 L417.1 131.6 L415.5 131.7 L413.9 131.8 L412.3 131.8 L410.7 131.9 L409.1 132.0 L407.5 132.0 L405.8 132.0 L404.2 132.0 L402.5 132.0 L400.9 132.0 L399.3 131.9 L397.7 131.8 L396.1 131.8 L394.5 131.7 L392.9 131.6 L391.4 131.5 L389.9 131.3 L388.5 131.2 L387.1 131.0 L385.7 130.9 L384.4 130.7 L383.2 130.5 L382.0 130.3 L380.8 130.1 L379.7 129.9 L378.7 129.6 L377.7 129.4 L376.8 129.1 L376.0 128.9 L375.3 128.6 L374.6 128.3 L374.0 128.1 L373.5 127.8 L373.0 127.5 L372.7 127.2 L372.4 126.9 L372.2 126.6 L372.0 126.3 L372.0 126.0" data-name="PlutoF"></path>
+							</g>
+						<g transform="translate(372, 99)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PlutoF">
+								<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PlutoF">
+									<text x="25.0" y="13.5" stroke="none" text-anchor="middle" data-name="PlutoF">PlutoF</text>
+								
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
