@@ -72,7 +72,6 @@ function App() {
   }
 
   function showSample(sample, siteId, input) {
-    console.log(sample)
     const site_ok = sample.simplified_name.toString() === siteId || siteId === "";
     const query = sample.name.toLowerCase().includes(input) || sample.area_name.toLowerCase().includes(input) || sample.parent_area_name.toLowerCase().includes(input) || input === "";
     return site_ok && query;
