@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Row, Col, Table, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Container, Row, Col, Table, Button, OverlayTrigger, Tooltip, ToggleButton } from "react-bootstrap";
 import SiteSelector from "./SiteSelector";
 import { Database, Droplet } from "react-bootstrap-icons";
 import FeedbackModal from "./FeedbackModal";
@@ -11,6 +11,7 @@ function Species({sites}) {
   const [site, setSite] = useState(null);
   const [reviewed, setReviewed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [ednaOnly, setEdnaOnly] = useState(false);
 
   function downloadUrl() {
     const selectedSite = sites[siteId];
@@ -96,8 +97,8 @@ function Species({sites}) {
           <Col>
             <h4>Fish, mammal, and turtle species in OBIS for {site.name} <span className="ms-2 badge badge-count">{species.species.length.toLocaleString("en-US")}</span></h4>
             <p>This is a list of fish, mammal, and turtle species observed at the site according to the Ocean Biodiversity Information System (OBIS). Data can be very incomplete for some sites. The eDNA Expeditions project is in the process of mobilizing biodiversity datasets from the World Heritage sites to improve completeness.</p>
-            <Button variant="secondary" onClick={provideFeedback}>Provide feedback</Button>
-            <Button className="ms-2" variant="primary" onClick={markReviewed}>Mark as reviewed</Button>
+            <Button className="btn-feedback" onClick={provideFeedback}>Provide feedback</Button>
+            <Button className="ms-2 btn-confirm" onClick={markReviewed}>Mark as reviewed</Button>
             <a className="ms-2" rel="noreferrer" href={downloadUrl()} target="_blank"><Button variant="light">Download list</Button></a>
           </Col>
         </Row>
@@ -111,6 +112,13 @@ function Species({sites}) {
           <Col className="mb-3">{statistic(species.stats.source.obis, "From OBIS")}</Col>
           <Col className="mb-3">{statistic(species.stats.source.edna, "From eDNA")}</Col>
           <Col className="mb-3">{statistic(species.stats.source.both, "OBIS & eDNA")}</Col>
+        </Row>
+      }
+      { species &&
+        <Row>
+          <Col className="mt-1">
+            <ToggleButton size="sm" variant="outline-primary" type="checkbox" role="button" id="ednaonly" label="eDNA only" checked={ednaOnly} onChange={(e) => setEdnaOnly(e.target.checked)} >eDNA only</ToggleButton>
+          </Col>
         </Row>
       }
       { species &&
@@ -132,7 +140,7 @@ function Species({sites}) {
                   </tr>
                 </thead>
                 <tbody>
-                  { species.species.map((sp) => <tr key={sp.AphiaID}>
+                  { species.species.filter((sp) => sp.source_dna || !ednaOnly).map((sp) => <tr key={sp.AphiaID}>
                     <td>
                       {sp.source_obis && <OverlayTrigger placement="top" overlay={databaseTooltip}><Database /></OverlayTrigger>}
                       {sp.source_dna && <OverlayTrigger placement="top" overlay={ednaTooltip}><Droplet /></OverlayTrigger>}

@@ -137,13 +137,13 @@ a, .a {
   color: #999999 !important;
 }
 
-.btn-primary {
+.btn-confirm {
   border: 0px !important;
   background-color: #cccc00 !important;
   color: #000000 !important;
 }
 
-.btn-secondary {
+.btn-feedback {
   border: 0px !important;
   background-color: #FAC241 !important;
   color: #000000 !important;
