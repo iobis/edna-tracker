@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Container, Row, Col, Table, Modal } from "react-bootstrap";
+import { Container, Row, Col, Table } from "react-bootstrap";
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, GeoJSON } from "react-leaflet";
 import MarkerClusterGroup from "@changey/react-leaflet-markercluster";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,8 +11,7 @@ import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import L from "leaflet";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Link45deg, FileText, Book } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link45deg, Book } from "react-bootstrap-icons";
 import SiteSelector from "./SiteSelector";
 
 Highcharts.setOptions({ credits: { enabled: false } });

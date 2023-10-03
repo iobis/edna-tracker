@@ -19,7 +19,7 @@ function FeedbackModal({showFeedback, setShowFeedback, site, reviewed}) {
   }
 
   function allowSubmit() {
-    const allow = !formDisabled && (issue.email !== "" && issue.title !== "" && issue.message !== "");
+    const allow = !formDisabled && (issue.email !== "" && issue.title !== "" && (issue.message !== "" || reviewed));
     return allow;
   }
 
@@ -46,10 +46,20 @@ function FeedbackModal({showFeedback, setShowFeedback, site, reviewed}) {
 
   return <Modal show={true}>
     <Modal.Header>
-      <Modal.Title>Submit feedback</Modal.Title>
+      {
+        reviewed ?
+        <Modal.Title>Mark as reviewed</Modal.Title>
+        :
+        <Modal.Title>Submit feedback</Modal.Title>
+      }
     </Modal.Header>
     <Modal.Body>
-      <p>Use this form to provide feedback on the eDNA tracker species lists. Please include sources if possible. Accompanying files can be provided by email to <a href="mailto:edna.expeditions@unesco.org">edna.expeditions@unesco.org</a>.</p>
+      {
+        reviewed ?
+        <p>Mark as reviewed and optionally add a message.</p>
+        :
+        <p>Use this form to provide feedback on the eDNA tracker species lists. Please include sources if possible. Accompanying files can be provided by email to <a href="mailto:edna.expeditions@unesco.org">edna.expeditions@unesco.org</a>.</p>
+      }
 
     <Form>
     <Form.Group className="mb-3">
