@@ -20,14 +20,14 @@ function Species({sites}) {
   }
 
   function handleSiteChange(event) {
-    const parent_area_plutof_id = event.target.value;
-    if (parent_area_plutof_id === "") {
+    const simplified_name = event.target.value;
+    if (simplified_name === "") {
       setSite(null);
       setSiteId("");
       setSpecies(null);
     } else {
-      const selectedSite = sites[parent_area_plutof_id];
-      setSiteId(parent_area_plutof_id);
+      const selectedSite = sites[simplified_name];
+      setSiteId(simplified_name);
       setSite(selectedSite);
       async function fetchSpecies(siteName) {
         const res = await fetch("https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists/json/" + siteName + ".json");

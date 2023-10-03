@@ -36,7 +36,7 @@ function App() {
       setSiteId(siteid);
       setCreated(data.created);
       data.sites = data.sites.reduce((obj, item) => {
-        obj[item.plutof_id] = item;
+        obj[item.simplified_name] = item;
         return obj;
       }, {});
       setSites(data.sites);
@@ -57,11 +57,11 @@ function App() {
   }, []);
 
   function handleSiteChange(event) {
-    const parent_area_plutof_id = event.target.value;
-    setSiteId(parent_area_plutof_id);
-    setSite(sites[parent_area_plutof_id]);
-    filterSamples(samples, parent_area_plutof_id, query);
-    updateUrl(parent_area_plutof_id, query);
+    const simplified_name = event.target.value;
+    setSiteId(simplified_name);
+    setSite(sites[simplified_name]);
+    filterSamples(samples, simplified_name, query);
+    updateUrl(simplified_name, query);
   }
 
   function handleQueryChange(event) {
@@ -72,7 +72,8 @@ function App() {
   }
 
   function showSample(sample, siteId, input) {
-    const site_ok = sample.parent_area_plutof_id.toString() === siteId || siteId === "";
+    console.log(sample)
+    const site_ok = sample.simplified_name.toString() === siteId || siteId === "";
     const query = sample.name.toLowerCase().includes(input) || sample.area_name.toLowerCase().includes(input) || sample.parent_area_name.toLowerCase().includes(input) || input === "";
     return site_ok && query;
   }

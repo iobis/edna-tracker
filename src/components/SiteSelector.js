@@ -4,7 +4,7 @@ const SiteSelector = function({sites, siteId, handleSiteChange}) {
         <select className="form-select" value={siteId} onChange={handleSiteChange}>
         <option value="">Select site</option>
         {
-            Object.values(sites).sort((a, b) => (a.name > b.name) ? 1 : -1).map((site) => <option key={site.plutof_id} value={site.plutof_id}>{site.name}</option>)
+            Object.values(sites).sort((a, b) => (a.name > b.name) ? 1 : -1).map((site) => <option key={site.simplified_name} value={site.simplified_name}>{site.name}</option>)
         }
         </select>
     </div>
