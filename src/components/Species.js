@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Table, Button, OverlayTrigger, Tooltip, ToggleButton } from "react-bootstrap";
 import SiteSelector from "./SiteSelector";
 import { Database, Droplet } from "react-bootstrap-icons";
 import FeedbackModal from "./FeedbackModal";
 
-function Species({sites}) {
+function Species({sites, siteId, site, updateSite}) {
 
   const [species, setSpecies] = useState(null);
-  const [siteId, setSiteId] = useState("");
-  const [site, setSite] = useState(null);
   const [reviewed, setReviewed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [ednaOnly, setEdnaOnly] = useState(false);
@@ -19,16 +17,11 @@ function Species({sites}) {
     return url;
   }
 
-  function handleSiteChange(event) {
-    const simplified_name = event.target.value;
+  function updateSpecies(simplified_name) {
     if (simplified_name === "") {
-      setSite(null);
-      setSiteId("");
       setSpecies(null);
     } else {
       const selectedSite = sites[simplified_name];
-      setSiteId(simplified_name);
-      setSite(selectedSite);
       async function fetchSpecies(siteName) {
         const res = await fetch("https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists/json/" + siteName + ".json");
         const data = await res.json();
@@ -37,8 +30,17 @@ function Species({sites}) {
       fetchSpecies(selectedSite.simplified_name);
     }
   }
+
+  function handleSiteChange(event) {
+    updateSite(event.target.value);
+    updateSpecies(event.target.value);
+  }
   
-  function redlist_classname(category) {
+  useEffect(() => {
+    updateSpecies(siteId);
+  }, []);
+
+  function redlistClassname(category) {
     if (category === "LC") {  
       return "badge badge-lc";
     } else if (category === "NT") {
@@ -150,7 +152,7 @@ function Species({sites}) {
                     <td>{sp.order}</td>
                     <td>{sp.family}</td>
                     <td>{sp.species}</td>
-                    <td><span className={redlist_classname(sp.redlist_category)}>{sp.redlist_category}</span></td>
+                    <td><span className={redlistClassname(sp.redlist_category)}>{sp.redlist_category}</span></td>
                     {/* <td>{sp.group}</td> */}
                     <td>
                       { sp.group === "fish" && <OverlayTrigger placement="top" overlay={fishTooltip}><img alt="fish" src="fish.svg" width="20" height="20"></img></OverlayTrigger>}

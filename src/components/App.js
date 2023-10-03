@@ -57,7 +57,10 @@ function App() {
   }, []);
 
   function handleSiteChange(event) {
-    const simplified_name = event.target.value;
+    updateSite(event.target.value);
+  }
+
+  function updateSite(simplified_name) {
     setSiteId(simplified_name);
     setSite(sites[simplified_name]);
     filterSamples(samples, simplified_name, query);
@@ -165,8 +168,8 @@ function App() {
           </Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/">Samples</Nav.Link>
-              <Nav.Link as={Link} to="/species">Species lists</Nav.Link>
+              <Nav.Link as={Link} to={{ pathname: "/", search: window.location.search}}>Samples</Nav.Link>
+              <Nav.Link as={Link} to={{ pathname: "/species", search: window.location.search}}>Species lists</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -174,7 +177,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Samples sites={sites} samples={samples} setSamples={setSamples} geo={geo} site={site} siteId={siteId} query={query} handleQueryChange={handleQueryChange} handleSiteChange={handleSiteChange} concentrationChart={concentrationChart} statusChart={statusChart} />}></Route>
-        <Route path="/species" element={<Species sites={sites} siteId={siteId} handleSiteChange={handleSiteChange} />}></Route>
+        <Route path="/species" element={<Species sites={sites} siteId={siteId} site={site} updateSite={updateSite} />}></Route>
       </Routes>
 
       <footer className="footer mt-auto pt-5 pb-5 bg-light">
