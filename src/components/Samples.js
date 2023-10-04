@@ -115,7 +115,16 @@ function Samples({sites, samples, setSamples, geo, site, siteId, query, handleSi
         <MarkerClusterGroup maxClusterRadius={40}>
           {
             samples.filter(sample => sample.area_longitude && sample.display).map(sample => <Marker key={sample.name} position={[sample.area_latitude, sample.area_longitude]} >
-              <Popup>{sample.name} - {sample.area_name}</Popup>
+              <Popup>
+                <p>
+                  <b>{sample.name} - {sample.area_name}</b>
+                  <br/>{sample.event_begin}
+                  { sample.dnas && <span>
+                      <br/>DNA concentration: {sample.dnas.map(dna => dna.concentration + " ng/µl").join(", ")}  
+                    </span>
+                  }
+                </p>
+              </Popup>
             </Marker>)
           }
         </MarkerClusterGroup>
