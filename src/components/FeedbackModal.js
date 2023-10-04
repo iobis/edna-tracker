@@ -90,8 +90,8 @@ function FeedbackModal({showFeedback, setShowFeedback, site, reviewed}) {
 
     </Modal.Body>
     <Modal.Footer>
-      <Button disabled={formDisabled} variant="secondary" onClick={() => setShowFeedback(false)}>Cancel</Button>
-      <Button disabled={!allowSubmit()} variant="primary" onClick={handleSubmit}>Submit</Button>
+      <Button disabled={formDisabled} className="btn-cancel" onClick={() => setShowFeedback(false)}>Cancel</Button>
+      <Button disabled={!allowSubmit()} className="btn-confirm" onClick={handleSubmit}>Submit</Button>
     </Modal.Footer>
   </Modal>
 
