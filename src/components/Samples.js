@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Container, Row, Col, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, GeoJSON } from "react-leaflet";
 import MarkerClusterGroup from "@changey/react-leaflet-markercluster";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,7 +12,7 @@ import "@changey/react-leaflet-markercluster/dist/styles.min.css";
 import L from "leaflet";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Link45deg, Book } from "react-bootstrap-icons";
+import { Link45deg, Book, FileText } from "react-bootstrap-icons";
 import SiteSelector from "./SiteSelector";
 
 Highcharts.setOptions({ credits: { enabled: false } });
@@ -157,6 +158,8 @@ function Samples({sites, samples, setSamples, geo, site, siteId, query, handleSi
                 {
                   site.article && <span className="ms-3"><Book /> <a href={site.article} rel="noreferrer" target="_blank">read article</a></span>
                 }
+                <span className="ms-3"><FileText /> <Link to={{ pathname: "/species", search: window.location.search}}>Species lists</Link></span>
+
               </p>
             </Col>
           </Row>
