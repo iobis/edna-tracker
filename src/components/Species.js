@@ -62,7 +62,13 @@ function Species({sites, siteId, site, updateSite}) {
     }
   }
   
-  const databaseTooltip = <Tooltip>OBIS</Tooltip>;
+  const databaseTooltip = function(source_obis, source_gbif) {
+    let sources = [];
+    if (source_obis) sources.push("OBIS");
+    if (source_gbif) sources.push("GBIF");
+    const value = sources.join(", ")
+    return <Tooltip>{value}</Tooltip>;
+  }
   const ednaTooltip = <Tooltip>eDNA Expeditions</Tooltip>;
   const fishTooltip = <Tooltip>Fish</Tooltip>;
   const mammalTooltip = <Tooltip>Mammal</Tooltip>;
@@ -111,9 +117,9 @@ function Species({sites, siteId, site, updateSite}) {
           <Col className="mb-3">{statistic(species.stats.groups.mammal, "Mammal species")}</Col>
           <Col className="mb-3">{statistic(species.stats.groups.turtle, "Turtle species")}</Col>
           <Col className="mb-3">{statistic(species.stats.redlist, "Vulnerable species")}</Col>
-          <Col className="mb-3">{statistic(species.stats.source.obis, "From OBIS")}</Col>
+          <Col className="mb-3">{statistic(species.stats.source.db, "From OBIS/GBIF")}</Col>
           <Col className="mb-3">{statistic(species.stats.source.edna, "From eDNA")}</Col>
-          <Col className="mb-3">{statistic(species.stats.source.both, "OBIS & eDNA")}</Col>
+          <Col className="mb-3">{statistic(species.stats.source.both, "OBIS/GBIF & eDNA")}</Col>
         </Row>
       }
       { species &&
@@ -144,7 +150,7 @@ function Species({sites, siteId, site, updateSite}) {
                 <tbody>
                   { species.species.filter((sp) => sp.source_dna || !ednaOnly).map((sp) => <tr key={sp.AphiaID}>
                     <td>
-                      {sp.source_obis && <OverlayTrigger placement="top" overlay={databaseTooltip}><Database /></OverlayTrigger>}
+                      {(sp.source_obis || sp.source_gbif) && <OverlayTrigger placement="top" overlay={databaseTooltip(sp.source_obis, sp.source_gbif)}><Database /></OverlayTrigger>}
                       {sp.source_dna && <OverlayTrigger placement="top" overlay={ednaTooltip}><Droplet /></OverlayTrigger>}
                     </td>
                     <td>{sp.phylum}</td>
