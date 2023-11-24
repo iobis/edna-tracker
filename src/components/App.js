@@ -7,6 +7,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Samples from "./Samples";
 import Species from "./Species";
 import { concentrationChartTemplate, statusChartTemplate } from "./charts";
+import { useSearchParams } from "react-router-dom";
 
 function App() {
 
@@ -20,11 +21,12 @@ function App() {
   const [statusChart, setStatusChart] = useState(statusChartTemplate);
   const [concentrationChart, setConcentrationChart] = useState(concentrationChartTemplate);
 
+  const [currentSearchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     async function fetchData() {
-      const params = getUrlParams();
-      const input = params.search;
-      const siteid = params.site;
+      const input = currentSearchParams.get("search") ? currentSearchParams.get("search") : "";
+      const siteid = currentSearchParams.get("site") ? currentSearchParams.get("site") : "";
 
       const res = await fetch("https://raw.githubusercontent.com/iobis/edna-tracker-data/data/generated.json");
       const data = await res.json();
@@ -34,6 +36,9 @@ function App() {
 
       setQuery(input);
       setSiteId(siteid);
+
+      console.log("setSiteId", siteid);
+
       setCreated(data.created);
       data.sites = data.sites.reduce((obj, item) => {
         obj[item.simplified_name] = item;
@@ -89,7 +94,10 @@ function App() {
   }
   
   function updateUrl(siteId, input) {
-    window.history.replaceState(null, null, "?search=" + input +"&site=" + siteId);
+    const newQueryParameters = new URLSearchParams();
+    newQueryParameters.set("search", input);
+    newQueryParameters.set("site", siteId);
+    setSearchParams(newQueryParameters);	
   }
 
   function filterSamples(samples, siteId, input) {
@@ -101,14 +109,6 @@ function App() {
     calculateStatusChart(new_samples);
     calculateConcentrationChart(new_samples);
   };
-
-  function getUrlParams() {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    return {
-      search: urlSearchParams.get("search") ? urlSearchParams.get("search") : "",
-      site: urlSearchParams.get("site") ? urlSearchParams.get("site") : ""
-    }
-  }
 
   function calculateConcentrationChart(new_samples) {
     const concentrations = new_samples.filter(sample => sample.display).map(sample => sample.dnas.map(dna => dna.concentration)).flat();
@@ -159,17 +159,19 @@ function App() {
     });
   }
 
+  console.log("App updating with siteId", siteId);
+
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="/">
+          <Navbar.Brand as={Link} to="/">
             eDNA Expeditions sample tracking
           </Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to={{ pathname: "/", search: window.location.search}}>Samples</Nav.Link>
-              <Nav.Link as={Link} to={{ pathname: "/species", search: window.location.search}}>Species lists</Nav.Link>
+              <Nav.Link as={Link} to={{ pathname: "/" }}>Samples</Nav.Link>
+              <Nav.Link as={Link} to={{ pathname: "/species" }}>Species lists</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
