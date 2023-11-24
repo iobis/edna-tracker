@@ -99,8 +99,10 @@ function Species({sites, siteId, site, updateSite}) {
         <Row>
           <Col lg="4" className="mt-3 mb-3">
             <h2>Species lists</h2>
-            <p>Enter the password to access the species lists.</p>
-            <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
+            <div className="mt-4">
+              <p>Enter the provided password to access the species lists.</p>
+              <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
+            </div>
           </Col>
         </Row>
       </Container>
