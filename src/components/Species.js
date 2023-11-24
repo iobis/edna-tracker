@@ -18,7 +18,6 @@ function Species({sites, siteId, site, updateSite}) {
   }
 
   function updateSpecies(simplified_name) {
-    console.log("updateSpecies", simplified_name);
     if (simplified_name === "") {
       setSpecies(null);
     } else {
@@ -38,9 +37,8 @@ function Species({sites, siteId, site, updateSite}) {
   }
   
   useEffect(() => {
-    console.log("Species useEffect with siteId", siteId);
     updateSpecies(siteId);
-  }, []);
+  }, [siteId, sites]);
 
   function redlistClassname(category) {
     if (category === "LC") {  

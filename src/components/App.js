@@ -36,9 +36,6 @@ function App() {
 
       setQuery(input);
       setSiteId(siteid);
-
-      console.log("setSiteId", siteid);
-
       setCreated(data.created);
       data.sites = data.sites.reduce((obj, item) => {
         obj[item.simplified_name] = item;
@@ -159,8 +156,6 @@ function App() {
     });
   }
 
-  console.log("App updating with siteId", siteId);
-
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -170,8 +165,8 @@ function App() {
           </Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to={{ pathname: "/" }}>Samples</Nav.Link>
-              <Nav.Link as={Link} to={{ pathname: "/species" }}>Species lists</Nav.Link>
+              <Nav.Link as={Link} to={{ pathname: "/", search: "?" + currentSearchParams.toString() }}>Samples</Nav.Link>
+              <Nav.Link as={Link} to={{ pathname: "/species", search: "?" + currentSearchParams.toString() }}>Species lists</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
