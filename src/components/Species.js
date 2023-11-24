@@ -3,9 +3,11 @@ import { Container, Row, Col, Table, Button, OverlayTrigger, Tooltip, ToggleButt
 import SiteSelector from "./SiteSelector";
 import { Database, Droplet } from "react-bootstrap-icons";
 import FeedbackModal from "./FeedbackModal";
+import { md5 } from "js-md5";
 
 function Species({sites, siteId, site, updateSite}) {
 
+  const [password, setPassword] = useState("");
   const [species, setSpecies] = useState(null);
   const [reviewed, setReviewed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -89,6 +91,20 @@ function Species({sites, siteId, site, updateSite}) {
   function provideFeedback() {
     setReviewed(false);
     setShowFeedback(true);
+  }
+
+  if (!password || md5(password) !== "f2941bbeb90dc2144a7a96f87f99b252") {
+    return <div>
+      <Container className="mt-3 mb-3">
+        <Row>
+          <Col lg="4" className="mt-3 mb-3">
+            <h2>Species lists</h2>
+            <p>Enter the password to access the species lists.</p>
+            <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
+          </Col>
+        </Row>
+      </Container>
+    </div>
   }
 
   return <div>
