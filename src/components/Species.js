@@ -132,21 +132,21 @@ function Species({sites, siteId, site, updateSite}) {
       { species &&
         <Row className="mt-4">
           <Col className="mb-3">{statistic(species.stats.groups.fish, "Fish species")}</Col>
-          <Col className="mb-3">{statistic(species.stats.groups.mammal, "Mammal species")}</Col>
-          <Col className="mb-3">{statistic(species.stats.groups.turtle, "Turtle species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.groups.mammals, "Mammal species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.groups.turtles, "Turtle species")}</Col>
           <Col className="mb-3">{statistic(species.stats.redlist, "Vulnerable species")}</Col>
           <Col className="mb-3">{statistic(species.stats.source.db, "From OBIS/GBIF")}</Col>
           <Col className="mb-3">{statistic(species.stats.source.edna, "From eDNA")}</Col>
           <Col className="mb-3">{statistic(species.stats.source.both, "OBIS/GBIF & eDNA")}</Col>
         </Row>
       }
-      { species &&
+      {/* { species &&
         <Row>
           <Col className="mt-1">
             <ToggleButton size="sm" variant="outline-primary" type="checkbox" role="button" id="ednaonly" label="eDNA only" checked={ednaOnly} onChange={(e) => setEdnaOnly(e.target.checked)} >eDNA only</ToggleButton>
           </Col>
         </Row>
-      }
+      } */}
       { species &&
         <Row>
           <Col className="mt-3 mb-3">
@@ -154,7 +154,6 @@ function Species({sites, siteId, site, updateSite}) {
               <Table className="table-sm text-sm">
                 <thead>
                   <tr className="nowrap">
-                    <th></th>
                     <th>Phylum</th>
                     <th>Class</th>
                     <th>Order</th>
@@ -162,15 +161,12 @@ function Species({sites, siteId, site, updateSite}) {
                     <th>Species</th>
                     <th>Red List</th>
                     <th>Group</th>
+                    <th>Source</th>
                     <th>Last observed</th>
                   </tr>
                 </thead>
                 <tbody>
                   { species.species.filter((sp) => sp.source_dna || !ednaOnly).map((sp) => <tr key={sp.AphiaID}>
-                    <td>
-                      {(sp.source_obis || sp.source_gbif) && <OverlayTrigger placement="top" overlay={databaseTooltip(sp.source_obis, sp.source_gbif)}><Database /></OverlayTrigger>}
-                      {sp.source_dna && <OverlayTrigger placement="top" overlay={ednaTooltip}><Droplet /></OverlayTrigger>}
-                    </td>
                     <td>{sp.phylum}</td>
                     <td>{sp.class}</td>
                     <td>{sp.order}</td>
@@ -182,6 +178,10 @@ function Species({sites, siteId, site, updateSite}) {
                       { sp.group === "fish" && <OverlayTrigger placement="top" overlay={fishTooltip}><img alt="fish" src="fish.svg" width="20" height="20"></img></OverlayTrigger>}
                       { sp.group === "mammal" && <OverlayTrigger placement="top" overlay={mammalTooltip}><img alt="mammal" src="mammal.svg" width="20" height="20"></img></OverlayTrigger>}
                       { sp.group === "turtle" && <OverlayTrigger placement="top" overlay={turtleTooltip}><img alt="turtle" src="turtle.svg" width="20" height="20"></img></OverlayTrigger>}
+                    </td>
+                    <td className="text-nowrap">
+                      {sp.source_dna && <OverlayTrigger placement="top" overlay={ednaTooltip}><Droplet /></OverlayTrigger>}
+                      {(sp.source_obis || sp.source_gbif) && <OverlayTrigger placement="top" overlay={databaseTooltip(sp.source_obis, sp.source_gbif)}><Database /></OverlayTrigger>}
                     </td>
                     <td>{sp.max_year}</td>
                   </tr>) }
