@@ -15,7 +15,7 @@ function Species({sites, siteId, site, updateSite}) {
 
   function downloadUrl() {
     const selectedSite = sites[siteId];
-    const url = "https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists/csv/" + selectedSite.simplified_name + ".csv";
+    const url = "https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists_full/csv/" + selectedSite.simplified_name + ".csv";
     return url;
   }
 
@@ -131,13 +131,12 @@ function Species({sites, siteId, site, updateSite}) {
       }
       { species &&
         <Row className="mt-4">
+          <Col className="mb-3">{statistic(species.stats.source.edna, "From eDNA")}</Col>
+          <Col className="mb-3">{statistic(species.stats.source.both, "OBIS/GBIF & eDNA")}</Col>
           <Col className="mb-3">{statistic(species.stats.groups.fish, "Fish species")}</Col>
           <Col className="mb-3">{statistic(species.stats.groups.mammals, "Mammal species")}</Col>
           <Col className="mb-3">{statistic(species.stats.groups.turtles, "Turtle species")}</Col>
           <Col className="mb-3">{statistic(species.stats.redlist, "Vulnerable species")}</Col>
-          <Col className="mb-3">{statistic(species.stats.source.db, "From OBIS/GBIF")}</Col>
-          <Col className="mb-3">{statistic(species.stats.source.edna, "From eDNA")}</Col>
-          <Col className="mb-3">{statistic(species.stats.source.both, "OBIS/GBIF & eDNA")}</Col>
         </Row>
       }
       {/* { species &&
@@ -162,7 +161,7 @@ function Species({sites, siteId, site, updateSite}) {
                     <th>Red List</th>
                     <th>Group</th>
                     <th>Source</th>
-                    <th>Last observed</th>
+                    <th>Last reported</th>
                   </tr>
                 </thead>
                 <tbody>
