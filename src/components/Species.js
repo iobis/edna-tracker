@@ -133,10 +133,10 @@ function Species({sites, siteId, site, updateSite}) {
         <Row className="mt-4">
           <Col className="mb-3">{statistic(species.stats.source.edna, "From eDNA")}</Col>
           <Col className="mb-3">{statistic(species.stats.source.both, "OBIS/GBIF & eDNA")}</Col>
-          <Col className="mb-3">{statistic(species.stats.groups.fish, "Fish species")}</Col>
-          <Col className="mb-3">{statistic(species.stats.groups.mammals, "Mammal species")}</Col>
-          <Col className="mb-3">{statistic(species.stats.groups.turtles, "Turtle species")}</Col>
-          <Col className="mb-3">{statistic(species.stats.redlist, "Vulnerable species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.groups_edna.fish, "Fish species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.groups_edna.mammals, "Mammal species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.groups_edna.turtles, "Turtle species")}</Col>
+          <Col className="mb-3">{statistic(species.stats.redlist.map(x => x.edna_species ? x.edna_species : 0).reduce((a, b) => a + b, 0), "Vulnerable species")}</Col>
         </Row>
       }
       {/* { species &&
