@@ -93,21 +93,21 @@ function Species({sites, siteId, site, updateSite}) {
     setShowFeedback(true);
   }
 
-  if (!password || md5(password) !== "f2941bbeb90dc2144a7a96f87f99b252") {
-    return <div>
-      <Container className="mt-3 mb-3">
-        <Row>
-          <Col lg="4" className="mt-3 mb-3">
-            <h2>Species lists</h2>
-            <div className="mt-4">
-              <p>Enter the provided password to access the species lists.</p>
-              <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  }
+  // if (!password || md5(password) !== "f2941bbeb90dc2144a7a96f87f99b252") {
+  //   return <div>
+  //     <Container className="mt-3 mb-3">
+  //       <Row>
+  //         <Col lg="4" className="mt-3 mb-3">
+  //           <h2>Species lists</h2>
+  //           <div className="mt-4">
+  //             <p>Enter the provided password to access the species lists.</p>
+  //             <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
+  //           </div>
+  //         </Col>
+  //       </Row>
+  //     </Container>
+  //   </div>
+  // }
 
   return <div>
     { showFeedback && <FeedbackModal showFeedback={showFeedback} setShowFeedback={setShowFeedback} site={site} reviewed={reviewed} /> }
