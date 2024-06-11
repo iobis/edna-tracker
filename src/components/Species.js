@@ -15,7 +15,7 @@ function Species({sites, siteId, site, updateSite}) {
 
   function downloadUrl() {
     const selectedSite = sites[siteId];
-    const url = "https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists_full/csv/" + selectedSite.simplified_name + ".csv";
+    const url = "https://obis-edna-lists.s3.amazonaws.com/lists_full/csv/" + selectedSite.simplified_name + ".csv";
     return url;
   }
 
@@ -25,7 +25,7 @@ function Species({sites, siteId, site, updateSite}) {
     } else {
       const selectedSite = sites[simplified_name];
       async function fetchSpecies(siteName) {
-        const res = await fetch("https://raw.githubusercontent.com/iobis/edna-species-lists/master/lists/json/" + siteName + ".json");
+        const res = await fetch("https://obis-edna-lists.s3.amazonaws.com/lists/json/" + siteName + ".json");
         const data = await res.json();
         setSpecies(data);
       }
